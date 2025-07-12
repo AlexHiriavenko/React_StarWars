@@ -25,8 +25,10 @@ class ErrorBoundary extends Component<Props, State> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: '2rem', color: 'red' }}>
-          <h2>Something went wrong.</h2>
+        <div className="p-8 text-red-600">
+          <h2 className="text-xl font-semibold">
+            Caught by ErrorBoundary: Something went wrong.
+          </h2>
         </div>
       );
     }
