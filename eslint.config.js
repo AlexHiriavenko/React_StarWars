@@ -19,6 +19,10 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        allowAutomaticSingleRunInference: true,
+      },
     },
     plugins: {
       react,
@@ -36,26 +40,16 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-explicit-any': 'error',
-      // Требует описывать возвращаемый тип у экспортируемых функций (внешние API)
-      '@typescript-eslint/explicit-module-boundary-types': 'warn',
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
+        { allowExpressions: true },
+      ],
+      // Предупреждает, если тип можно вывести
+      '@typescript-eslint/no-inferrable-types': 'warn',
       // Предупреждает, если функция неявно возвращает undefined
       '@typescript-eslint/no-confusing-void-expression': 'warn',
-      // ✍️ Требует писать return тип у функций (особенно полезно в коллбэках)
-      '@typescript-eslint/explicit-function-return-type': 'warn',
-
-      // объявления переменных без использования
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' },
-      ],
-      // неявное преобразование типов (например, !!value, value + '')
-      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
-
-      // объявление переменной и сразу её переприсвоение
-      '@typescript-eslint/prefer-const': 'err',
-
-      // 💡 Предупреждает, если тип можно вывести
-      '@typescript-eslint/no-inferrable-types': 'warn',
+      // отключает not-null assertion operator
+      '@typescript-eslint/no-non-null-assertion': 'warn',
     },
     settings: {
       react: {
