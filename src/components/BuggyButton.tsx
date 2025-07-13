@@ -17,13 +17,13 @@ class BuggyButton extends Component<unknown, BuggyButtonState> {
 
   render(): ReactNode {
     if (this.state.hasError) {
-      throw new Error('Button crashed!');
+      throw new Error('specially generated error');
     }
 
     return (
       <button
         onClick={this.handleClick}
-        className="bg-red-400  text-white font-bold py-2 px-4 rounded hover:border-white mt-4"
+        className="bg-red-400  text-white font-bold py-2 px-4 rounded hover:border-white hidden lg:block"
       >
         Generate Error
       </button>

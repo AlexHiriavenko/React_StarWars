@@ -1,3 +1,30 @@
+/* normalize */
+
+html {
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+  background-color: lightgray;
+}
+
+ul {
+  list-style-type: none;
+  margin-block: 0;
+  padding-block: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -54,3 +81,140 @@ button:focus-visible {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+
+.header-main {
+  width: 100%;
+  padding-block: 12px;
+  background-color: black;
+  color: white;
+  min-height: 64px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  overflow-x: hidden;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: fixed;
+}
+
+.app-title {
+  padding: 0;
+  margin: 0;
+  font-family: 'Rubik Mono One', sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  color: white;
+  text-align: center;
+  background-size: 200%;
+  text-shadow:
+    10px 10px 30px #f00,
+    -10px -10px 30px rgb(139, 61, 255);
+  -webkit-text-stroke: 2px rgb(152, 97, 97);
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 36px;
+  }
+}
+
+/* Content */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 84px;
+  row-gap: 16px;
+  column-gap: 12px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.card {
+  width: 200px;
+  height: 316px;
+  overflow-y: auto;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4));
+  color: rgb(17, 203, 85);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  text-shadow: 1px 1px 1px rgb(0, 0, 0);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card__title {
+  margin-block: 8px;
+}
+
+/* SEARCH */
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding-inline: 8px;
+  overflow-x: hidden;
+}
+
+@media (max-width: 796px) {
+  .search-form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-form {
+    padding-inline: 4px;
+    gap: 6px;
+  }
+}
+
+.search-input {
+  padding: 8px 12px;
+  font-size: 16px;
+  width: 300px;
+  border-radius: 12px;
+  outline: none;
+  border: none;
+  max-width: 60%;
+}
+
+@media (max-width: 480px) {
+  .search-input {
+    max-width: 60%;
+  }
+}
+
+.search-btn {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 16px;
+  border: none;
+  width: 96px;
+  min-width: 78px;
+  background-color: rgb(55, 55, 245);
+  color: white;
+  max-width: 20%;
+}
+
+@media (max-width: 796px) {
+  .cards {
+    margin-top: 136px;
+  }
+}
