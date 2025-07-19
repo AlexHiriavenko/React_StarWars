@@ -41,12 +41,18 @@ class App extends Component<object, AppState> {
       }),
       async () => {
         const characterService = new CharacterService();
-        const characters = await characterService.fetchCharacters(
-          { searchValue: search },
-          this.setPagination
-        );
-        this.setCards(characters);
-        this.setState({ loading: false });
+        try {
+          const characters = await characterService.fetchCharacters(
+            { searchValue: search },
+            this.setPagination
+          );
+          this.setCards(characters);
+        } catch (error) {
+          console.error('Error fetching characters:', error);
+          this.setCards([]);
+        } finally {
+          this.setState({ loading: false });
+        }
       }
     );
   }

@@ -25,8 +25,6 @@ describe('Search Component', () => {
     );
   });
 
-  // 🔹 Rendering Tests
-
   it('renders search input and button', () => {
     render(<Search {...defaultProps} />);
     expect(screen.getByRole('textbox')).toBeInTheDocument();
@@ -45,8 +43,6 @@ describe('Search Component', () => {
     const input = screen.getByRole('textbox') as HTMLInputElement;
     expect(input.value).toBe('');
   });
-
-  // 🔹 User Interaction Tests
 
   it('updates input value when user types', async () => {
     render(<Search {...defaultProps} />);
@@ -86,8 +82,6 @@ describe('Search Component', () => {
       expect.any(Function)
     );
   });
-
-  // 🔹 LocalStorage Integration
 
   it('retrieves saved search term on component mount', () => {
     localStorage.setItem('search', 'Obi-Wan');
