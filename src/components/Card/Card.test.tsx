@@ -4,11 +4,10 @@ import Card from './Card';
 import type { Character } from '../../AppTypes';
 
 describe('Card Component', () => {
-  it('displays item name and description correctly', () => {
+  it('displays item name and gender correctly', () => {
     const sampleCharacter: Character = {
-      uid: '1',
       name: 'Luke Skywalker',
-      description: 'Jedi Knight',
+      gender: 'male',
       url: 'some-url',
     };
 
@@ -16,15 +15,14 @@ describe('Card Component', () => {
 
     expect(screen.getByRole('article')).toBeInTheDocument();
     expect(screen.getByText(/Luke Skywalker/i)).toBeInTheDocument();
-    expect(screen.getByText(/Jedi Knight/i)).toBeInTheDocument();
+    expect(screen.getByText(/male/i)).toBeInTheDocument();
     expect(screen.getByAltText(/character photo/i)).toBeInTheDocument();
   });
 
-  it('handles missing name and description gracefully', () => {
+  it('handles missing name and gender gracefully', () => {
     const sampleCharacter: Character = {
-      uid: '2',
       name: '',
-      description: '',
+      gender: '',
       url: 'some-url',
       properties: {
         name: 'Fallback Name',
@@ -45,7 +43,15 @@ describe('Card Component', () => {
     render(<Card card={sampleCharacter} />);
 
     expect(screen.getByText(/Fallback Name/i)).toBeInTheDocument();
-    const descElement = screen.getByText('', { selector: 'p' });
-    expect(descElement).toBeInTheDocument();
+
+    // Проверка что отображается "gender: unknown"
+    const genderElement = screen.getByText((text, element) => {
+      return (
+        element?.tagName.toLowerCase() === 'p' &&
+        text.trim() === 'gender: unknown'
+      );
+    });
+
+    expect(genderElement).toBeInTheDocument();
   });
 });

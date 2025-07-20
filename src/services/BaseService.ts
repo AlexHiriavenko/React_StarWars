@@ -1,3 +1,5 @@
+import { BASE_URL } from './constants';
+
 export interface Options {
   page?: number;
   limit?: number;
@@ -6,21 +8,23 @@ export interface Options {
 }
 
 export class BaseService<T> {
-  private readonly baseURL: string;
+  protected readonly url: string;
+  protected readonly defaultLimit = 10;
+  protected readonly defaultPage = 1;
 
   constructor(endpoint: string) {
-    this.baseURL = `https://swapi.tech/api/${endpoint}`;
+    this.url = `${BASE_URL}${endpoint}`;
   }
 
   public async getData(options: Options): Promise<T> {
-    const page = options.page || 1;
-    const limit = options.limit || 8;
-    const defaultSearchKey = 'name';
+    const page = options.page || this.defaultPage;
+    const limit = options.limit || this.defaultLimit;
+    const defaultSearchKey = 'search';
     const searchKey = options.searchKey || defaultSearchKey;
     const searchValue = options.searchValue || '';
 
     try {
-      const url = `${this.baseURL}?${searchKey}=${searchValue}&expanded=true&page=${page}&limit=${limit}`;
+      const url = `${this.url}?${searchKey}=${searchValue}&page=${page}&limit=${limit}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {

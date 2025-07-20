@@ -15,32 +15,27 @@ export interface AppState {
 }
 
 export interface Character {
-  uid: string;
   name: string;
+  height?: string;
+  mass?: string;
+  hair_color?: string;
+  skin_color?: string;
+  eye_color?: string;
+  birth_year?: string;
+  gender: string;
+  homeworld?: string;
+  films?: string[];
+  species?: string[];
+  vehicles?: string[];
+  starships?: string[];
+  created?: string;
+  edited?: string;
   url: string;
-  description: string;
-  properties?: {
-    created: string;
-    edited: string;
-    name: string;
-    gender: string;
-    skin_color: string;
-    hair_color: string;
-    height: string;
-    eye_color: string;
-    mass: string;
-    homeworld: string;
-    birth_year: string;
-    url: string;
-  };
 }
 
 export interface SwapiPeopleResponse {
-  message: string;
-  total_records: number;
-  total_pages: number;
-  previous: string | null;
+  count: number;
   next: string | null;
-  results?: Character[];
-  result?: Character[];
+  previous: string | null;
+  results: Character[];
 }

@@ -18,7 +18,7 @@ class Home extends Component<HomeProps> {
     return (
       <section className="cards">
         {cards?.length ? (
-          cards.map((card: Character) => <Card key={card.uid} card={card} />)
+          cards.map((card: Character) => <Card key={card.url} card={card} />)
         ) : (
           <p className="app-loading">No search results</p>
         )}

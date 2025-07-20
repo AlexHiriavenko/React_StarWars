@@ -6,16 +6,14 @@ import type { Character } from '../AppTypes';
 describe('Home Component - Rendering', () => {
   const sampleCards: Character[] = [
     {
-      uid: '1',
       name: 'Luke Skywalker',
-      description: 'Jedi Knight',
-      url: 'url1',
+      gender: 'male',
+      url: 'https://swapi.py4e.com/api/people/1/',
     },
     {
-      uid: '2',
       name: 'Leia Organa',
-      description: 'Princess of Alderaan',
-      url: 'url2',
+      gender: 'female',
+      url: 'https://swapi.py4e.com/api/people/5/',
     },
   ];
 

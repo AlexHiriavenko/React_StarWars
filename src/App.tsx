@@ -9,10 +9,10 @@ import { CharacterService } from './services/CharacterService';
 
 const initialState: AppState = {
   cards: [],
-  loading: true,
+  loading: false,
   searchParams: {
     searchValue: '',
-    searchKey: 'name',
+    searchKey: 'search',
     limit: 10,
   },
   pagination: {
@@ -43,7 +43,7 @@ class App extends Component<object, AppState> {
         const characterService = new CharacterService();
         try {
           const characters = await characterService.fetchCharacters(
-            { searchValue: search },
+            { searchValue: search, page: 1 },
             this.setPagination
           );
           this.setCards(characters);
@@ -52,6 +52,9 @@ class App extends Component<object, AppState> {
           this.setCards([]);
         } finally {
           this.setState({ loading: false });
+          setTimeout(() => {
+            console.log(this.state);
+          }, 0);
         }
       }
     );
