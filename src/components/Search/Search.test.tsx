@@ -1,10 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Search from './Search';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { CharacterService } from '../../services/CharacterService';
 
-describe('Search Component', () => {
+describe('Search Component (non-API behavior)', () => {
   const mockUpdateCards = vi.fn();
   const mockSetLoading = vi.fn();
   const mockSetPagination = vi.fn();
@@ -18,11 +18,6 @@ describe('Search Component', () => {
   beforeEach(() => {
     localStorage.clear();
     vi.clearAllMocks();
-
-    // mock real HTTP request
-    vi.spyOn(CharacterService.prototype, 'fetchCharacters').mockResolvedValue(
-      []
-    );
   });
 
   it('renders search input and button', () => {
@@ -47,7 +42,7 @@ describe('Search Component', () => {
   it('updates input value when user types', async () => {
     render(<Search {...defaultProps} />);
     const input = screen.getByRole('textbox') as HTMLInputElement;
-    const user = userEvent.setup({ delay: 0 });
+    const user = userEvent.setup();
     await user.type(input, '  Leia  ');
     expect(input.value).toBe('  Leia  ');
   });
@@ -60,27 +55,7 @@ describe('Search Component', () => {
     fireEvent.change(input, { target: { value: '  Leia Organa  ' } });
     fireEvent.click(button);
 
-    expect(localStorage.getItem('search')).toBe('Leia Organa'); // value must be trimmed
-  });
-
-  it('triggers search callback with correct parameters', async () => {
-    const spy = vi
-      .spyOn(CharacterService.prototype, 'fetchCharacters')
-      .mockResolvedValue([]);
-
-    render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox');
-    const button = screen.getByRole('button', { name: /search/i });
-
-    fireEvent.change(input, { target: { value: '  Luke Skywalker  ' } });
-    fireEvent.click(button);
-
-    await screen.findByRole('button'); // wait to flush event loop
-
-    expect(spy).toHaveBeenCalledWith(
-      { searchValue: 'Luke Skywalker' },
-      expect.any(Function)
-    );
+    expect(localStorage.getItem('search')).toBe('Leia Organa');
   });
 
   it('retrieves saved search term on component mount', () => {
@@ -100,5 +75,25 @@ describe('Search Component', () => {
     fireEvent.click(button);
 
     expect(localStorage.getItem('search')).toBe('New Search');
+  });
+
+  it('triggers search callback with correct parameters', async () => {
+    const fetchSpy = vi
+      .spyOn(CharacterService.prototype, 'fetchCharacters')
+      .mockResolvedValue([]);
+
+    render(<Search {...defaultProps} />);
+    const input = screen.getByRole('textbox');
+    const button = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(input, { target: { value: '  Luke  ' } });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledWith(
+        { searchValue: 'Luke' },
+        expect.any(Function)
+      );
+    });
   });
 });
