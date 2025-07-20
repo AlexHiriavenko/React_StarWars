@@ -71,7 +71,7 @@ describe('App Component (MSW)', () => {
 
   it('handles API failure (404)', async () => {
     server.use(
-      http.get('https://swapi.tech/api/people', () => {
+      http.get('https://swapi.py4e.com/api/people', () => {
         return HttpResponse.json({ message: 'Not Found' }, { status: 404 });
       })
     );
