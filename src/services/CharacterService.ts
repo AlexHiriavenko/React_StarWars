@@ -1,6 +1,6 @@
 import { BaseService } from './BaseService';
 import type { Options } from './BaseService';
-import type { Character, SwapiPeopleResponse, AppState } from '../AppTypes';
+import type { Character, SwapiPeopleResponse, AppState } from '../App/AppTypes';
 
 export class CharacterService extends BaseService<SwapiPeopleResponse> {
   constructor() {

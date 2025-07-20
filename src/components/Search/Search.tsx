@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Component } from 'react';
-import type { Character, AppState } from '../../AppTypes';
+import type { Character, AppState } from '../../App/AppTypes';
 import { CharacterService } from '../../services/CharacterService';
 
 interface SearchState {

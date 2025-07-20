@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import type { Character } from '../../AppTypes';
+import type { Character } from '../../App/AppTypes';
 import type { ReactNode } from 'react';
 
 interface CardProps {
@@ -24,7 +24,7 @@ class Card extends Component<CardProps, CardState> {
 
     return (
       <div className="card" role="article">
-        <h3 className="card__title">{hero.name || hero.properties?.name}</h3>
+        <h3 className="card__title">{hero.name || 'unknown'}</h3>
         <p className="text-sm text-white mb-2">
           gender: {hero.gender || 'unknown'}
         </p>

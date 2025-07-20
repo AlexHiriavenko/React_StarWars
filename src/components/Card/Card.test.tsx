@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Card from './Card';
-import type { Character } from '../../AppTypes';
+import type { Character } from '../../App/AppTypes';
 
 describe('Card Component', () => {
   it('displays item name and gender correctly', () => {
@@ -24,27 +24,18 @@ describe('Card Component', () => {
       name: '',
       gender: '',
       url: 'some-url',
-      properties: {
-        name: 'Fallback Name',
-        created: '',
-        edited: '',
-        gender: '',
-        skin_color: '',
-        hair_color: '',
-        height: '',
-        eye_color: '',
-        mass: '',
-        homeworld: '',
-        birth_year: '',
-        url: '',
-      },
     };
 
     render(<Card card={sampleCharacter} />);
 
-    expect(screen.getByText(/Fallback Name/i)).toBeInTheDocument();
+    const nameElement = screen.getByText((text, element) => {
+      return (
+        element?.tagName.toLowerCase() === 'h3' && text.trim() === 'unknown'
+      );
+    });
 
-    // Проверка что отображается "gender: unknown"
+    expect(nameElement).toBeInTheDocument();
+
     const genderElement = screen.getByText((text, element) => {
       return (
         element?.tagName.toLowerCase() === 'p' &&

@@ -10,7 +10,7 @@ import {
   afterAll,
 } from 'vitest';
 import App from './App';
-import { server } from './mocks/server';
+import { server } from '../mocks/server';
 import { http, HttpResponse } from 'msw';
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;

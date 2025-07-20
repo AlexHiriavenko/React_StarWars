@@ -1,5 +1,5 @@
 import { Component, type ReactNode } from 'react';
-import type { Character } from '../AppTypes';
+import type { Character } from '../App/AppTypes';
 import Card from '../components/Card/Card';
 
 interface HomeProps {
