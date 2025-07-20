@@ -52,9 +52,6 @@ class App extends Component<object, AppState> {
           this.setCards([]);
         } finally {
           this.setState({ loading: false });
-          setTimeout(() => {
-            console.log(this.state);
-          }, 0);
         }
       }
     );
