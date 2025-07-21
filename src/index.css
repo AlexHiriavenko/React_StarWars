@@ -192,6 +192,7 @@ button:focus-visible {
   outline: none;
   border: none;
   max-width: 60%;
+  background-color: rgb(40, 40, 40);
 }
 
 @media (max-width: 480px) {
