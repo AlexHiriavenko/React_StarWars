@@ -1,7 +1,7 @@
 import type { ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Component } from 'react';
 import type { Character, AppState } from '@/App/AppTypes';
-import { CharacterService } from '@/services/CharacterService';
+import { CharacterService } from '@/services';
 
 interface SearchState {
   newSearchValue: string;
@@ -60,4 +60,4 @@ class Search extends Component<SearchProps, SearchState> {
   }
 }
 
-export default Search;
+export { Search };

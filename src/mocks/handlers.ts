@@ -2,7 +2,7 @@ import { delay, http, HttpResponse } from 'msw';
 import type { SwapiPeopleResponse } from '@/App/AppTypes';
 import { BASE_URL } from '@/services/constants';
 
-export const mockCharacterResponse: SwapiPeopleResponse = {
+const mockCharacterResponse: SwapiPeopleResponse = {
   results: [
     {
       name: 'Luke Skywalker',

@@ -34,4 +34,4 @@ class Card extends Component<CardProps, CardState> {
   }
 }
 
-export default Card;
+export { Card };

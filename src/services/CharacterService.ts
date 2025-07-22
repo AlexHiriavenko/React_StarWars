@@ -1,4 +1,4 @@
-import { BaseService } from '@/services/BaseService';
+import { BaseService } from '@/services';
 import type { Options } from '@/services/BaseService';
 import type { Character, SwapiPeopleResponse, AppState } from '@/App/AppTypes';
 

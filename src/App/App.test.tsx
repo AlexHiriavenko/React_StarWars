@@ -9,8 +9,8 @@ import {
   afterEach,
   afterAll,
 } from 'vitest';
-import App from '@/App/App';
-import { server } from '@/mocks/server';
+import { App } from '@/App';
+import { server } from '@/mocks';
 import { http, HttpResponse } from 'msw';
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;

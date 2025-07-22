@@ -1,11 +1,10 @@
 import { Component } from 'react';
 import type { ReactNode } from 'react';
 import './App.css';
-import BuggyButton from '@/components/ErrorBoundary/BuggyButton';
 import type { AppState, Character } from '@/App/AppTypes';
-import Home from '@/pages/Home';
-import Search from '@/components/Search/Search';
-import { CharacterService } from '@/services/CharacterService';
+import { Home } from '@/pages/';
+import { Search } from '@/components/Search';
+import { CharacterService } from '@/services';
 
 const initialState: AppState = {
   cards: [],
@@ -81,7 +80,6 @@ class App extends Component<object, AppState> {
             setLoading={this.setLoading}
             setPagination={this.setPagination}
           />
-          <BuggyButton />
         </header>
         <Home cards={cards} loading={loading} />
       </>
@@ -89,4 +87,4 @@ class App extends Component<object, AppState> {
   }
 }
 
-export default App;
+export { App };

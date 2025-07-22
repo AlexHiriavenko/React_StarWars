@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import { CharacterService } from '@/services/CharacterService';
-import { server } from '@/mocks/server';
+import { server } from '@/mocks';
 
 describe('CharacterService pagination parsing', () => {
   beforeAll(() => {

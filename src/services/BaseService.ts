@@ -37,8 +37,7 @@ export class BaseService<T> {
         throw new Error(`HTTP error: ${response.status}`);
       }
 
-      const data: T = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       console.error(`[BaseService] Ошибка при получении данных:`, error);
       throw error;
