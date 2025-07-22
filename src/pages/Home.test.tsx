@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import Home from './Home';
-import type { Character } from '../App/AppTypes';
+import Home from '@/pages/Home';
+import type { Character } from '@/App/AppTypes';
 
 describe('Home Component - Rendering', () => {
   const sampleCards: Character[] = [

@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import type { ReactNode } from 'react';
 import './App.css';
-import BuggyButton from '../components/ErrorBoundary/BuggyButton';
-import type { AppState, Character } from './AppTypes';
-import Home from '../pages/Home';
-import Search from '../components/Search/Search';
-import { CharacterService } from '../services/CharacterService';
+import BuggyButton from '@/components/ErrorBoundary/BuggyButton';
+import type { AppState, Character } from '@/App/AppTypes';
+import Home from '@/pages/Home';
+import Search from '@/components/Search/Search';
+import { CharacterService } from '@/services/CharacterService';
 
 const initialState: AppState = {
   cards: [],

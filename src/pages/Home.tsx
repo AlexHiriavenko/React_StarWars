@@ -1,6 +1,6 @@
 import { Component, type ReactNode } from 'react';
-import type { Character } from '../App/AppTypes';
-import Card from '../components/Card/Card';
+import type { Character } from '@/App/AppTypes';
+import Card from '@/components/Card/Card';
 
 interface HomeProps {
   cards: Character[];

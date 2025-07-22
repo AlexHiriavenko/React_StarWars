@@ -1,4 +1,4 @@
-import { BASE_URL } from './constants';
+import { BASE_URL } from '@/services/constants';
 
 export interface Options {
   page?: number;

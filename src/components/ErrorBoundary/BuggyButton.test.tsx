@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, afterAll, beforeEach } from 'vitest';
-import BuggyButton from './BuggyButton';
-import ErrorBoundary from './ErrorBoundary';
+import BuggyButton from '@/components/ErrorBoundary/BuggyButton';
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 
 beforeEach(() => vi.spyOn(console, 'error').mockImplementation(() => {}));
 afterAll(() => vi.restoreAllMocks());

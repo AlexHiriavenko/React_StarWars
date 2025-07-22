@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Search from './Search';
+import Search from '@/components/Search/Search';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { CharacterService } from '../../services/CharacterService';
+import { CharacterService } from '@/services/CharacterService';
 
 describe('Search Component (non-API behavior)', () => {
   const mockUpdateCards = vi.fn();

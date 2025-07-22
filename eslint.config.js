@@ -5,7 +5,6 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
-import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default tseslint.config(
   { ignores: ['dist', 'coverage'] },
@@ -30,7 +29,6 @@ export default tseslint.config(
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'react-compiler': reactCompiler,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -38,7 +36,6 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      'react-compiler/react-compiler': 'error',
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-explicit-any': 'error',
