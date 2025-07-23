@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
 import './App.css';
+import { useState, useEffect, useCallback } from 'react';
 import type { AppState, Character } from '@/App/AppTypes';
-import { Home } from '@/pages/';
 import { Search } from '@/components/Search';
+import { Home } from '@/pages/';
 import { CharacterService } from '@/services';
 
 const initialState: AppState = {

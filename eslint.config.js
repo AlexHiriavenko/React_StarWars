@@ -6,6 +6,7 @@ import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
+import importPlugin from 'eslint-plugin-import';
 
 export default tseslint.config(
   { ignores: ['dist', 'coverage'] },
@@ -31,6 +32,7 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'react-compiler': reactCompiler,
+      import: importPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -49,6 +51,62 @@ export default tseslint.config(
       '@typescript-eslint/no-inferrable-types': 'warn',
       '@typescript-eslint/no-confusing-void-expression': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
+      'react/jsx-key': 'error',
+      'import/first': 'error',
+      'prefer-const': 'error',
+      'no-var': 'error',
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'index',
+            'builtin', // node и react
+            'external', // lodash, axios
+            'type', // import type
+            'internal', // @/hooks и прочее
+            ['parent', 'sibling', 'index'], // относительные
+            'object',
+          ],
+          pathGroups: [
+            {
+              pattern: '**/*.css',
+              group: 'index',
+              position: 'before',
+            },
+            {
+              pattern: '{react,use*}',
+              group: 'builtin',
+              position: 'before',
+            },
+            {
+              pattern: '@/hooks/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@/services/**',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern: '@/components/**',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern: '@/pages/**',
+              group: 'internal',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          'newlines-between': 'never',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
     },
     settings: {
       react: {

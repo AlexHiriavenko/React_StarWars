@@ -1,6 +1,6 @@
+import type { JSX } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { JSX } from 'react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 function ThrowingComponent(): JSX.Element {

@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Card } from '@/components/Card';
+import { describe, it, expect } from 'vitest';
 import type { Character } from '@/App/AppTypes';
+import { Card } from '@/components/Card';
 
 describe('Card Component', () => {
   it('displays item name and gender correctly', () => {

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
 import {
   describe,
   it,
@@ -11,7 +12,6 @@ import {
 } from 'vitest';
 import { App } from '@/App';
 import { server } from '@/mocks';
-import { http, HttpResponse } from 'msw';
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
