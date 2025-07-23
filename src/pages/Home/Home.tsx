@@ -1,4 +1,3 @@
-import { Component, type ReactNode } from 'react';
 import type { Character } from '@/App/AppTypes';
 import { Card } from '@/components/Card';
 
@@ -7,24 +6,17 @@ interface HomeProps {
   loading: boolean;
 }
 
-class Home extends Component<HomeProps> {
-  render(): ReactNode {
-    const { cards, loading } = this.props;
+const Home = ({ cards, loading }: HomeProps): JSX.Element => {
+  if (loading) return <p className="app-loading">Loading...</p>;
 
-    if (loading) {
-      return <p className="app-loading">Loading...</p>;
-    }
-
-    return (
-      <section className="cards">
-        {cards?.length ? (
-          cards.map((card: Character) => <Card key={card.url} card={card} />)
-        ) : (
-          <p className="app-loading">No search results</p>
-        )}
-      </section>
+  const content =
+    cards.length > 0 ? (
+      cards.map((card) => <Card key={card.url} card={card} />)
+    ) : (
+      <p className="app-loading">No search results</p>
     );
-  }
-}
+
+  return <section className="cards">{content}</section>;
+};
 
 export { Home };

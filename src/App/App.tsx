@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import type { ReactNode } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import type { AppState, Character } from '@/App/AppTypes';
 import { Home } from '@/pages/';
@@ -22,69 +21,49 @@ const initialState: AppState = {
   },
 };
 
-class App extends Component<object, AppState> {
-  constructor(props: object) {
-    super(props);
-    this.state = initialState;
-  }
+const App = (): JSX.Element => {
+  const [cards, setCards] = useState<Character[]>(initialState.cards);
+  const [loading, setLoading] = useState<boolean>(initialState.loading);
+  const [searchParams, setSearchParams] = useState(initialState.searchParams);
+  const [pagination, setPagination] = useState(initialState.pagination);
 
-  componentDidMount(): void {
+  const fetchCharacters = useCallback(async (searchValue: string) => {
+    const characterService = new CharacterService();
+    setLoading(true);
+    try {
+      const characters = await characterService.fetchCharacters(
+        { searchValue, page: 1 },
+        setPagination
+      );
+      setCards(characters);
+    } catch (error) {
+      console.error('Error fetching characters:', error);
+      setCards([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
     const search = localStorage.getItem('search') || '';
-    this.setState(
-      (prev) => ({
-        loading: true,
-        searchParams: {
-          ...prev.searchParams,
-          searchValue: search,
-        },
-      }),
-      async () => {
-        const characterService = new CharacterService();
-        try {
-          const characters = await characterService.fetchCharacters(
-            { searchValue: search, page: 1 },
-            this.setPagination
-          );
-          this.setCards(characters);
-        } catch (error) {
-          console.error('Error fetching characters:', error);
-          this.setCards([]);
-        } finally {
-          this.setState({ loading: false });
-        }
-      }
-    );
-  }
+    setSearchParams((prev) => ({ ...prev, searchValue: search }));
+    fetchCharacters(search);
+    console.log(searchParams, pagination);
+  }, [fetchCharacters]);
 
-  setCards = (cards: Character[]): void => {
-    this.setState({ cards });
-  };
-
-  setLoading = (bool: boolean): void => {
-    this.setState({ loading: bool });
-  };
-
-  setPagination = (pagination: AppState['pagination']): void => {
-    this.setState({ pagination });
-  };
-
-  render(): ReactNode {
-    const { cards, loading } = this.state;
-
-    return (
-      <>
-        <header className="header-main">
-          <h1 className="app-title">Star Wars</h1>
-          <Search
-            updateCards={this.setCards}
-            setLoading={this.setLoading}
-            setPagination={this.setPagination}
-          />
-        </header>
-        <Home cards={cards} loading={loading} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <header className="header-main">
+        <h1 className="app-title">Star Wars</h1>
+        <Search
+          updateCards={setCards}
+          setLoading={setLoading}
+          setPagination={setPagination}
+        />
+      </header>
+      <Home cards={cards} loading={loading} />
+    </>
+  );
+};
 
 export { App };

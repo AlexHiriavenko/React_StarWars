@@ -1,11 +1,6 @@
-import type { ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Component } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import type { Character, AppState } from '@/App/AppTypes';
 import { CharacterService } from '@/services';
-
-interface SearchState {
-  newSearchValue: string;
-}
 
 interface SearchProps {
   updateCards: (newCards: Character[]) => void;
@@ -13,51 +8,53 @@ interface SearchProps {
   setPagination: (pagination: AppState['pagination']) => void;
 }
 
-class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      newSearchValue: localStorage.getItem('search') || '',
-    };
-  }
+const Search = ({
+  updateCards,
+  setLoading,
+  setPagination,
+}: SearchProps): JSX.Element => {
+  const [newSearchValue, setNewSearchValue] = useState(() => {
+    return localStorage.getItem('search') || '';
+  });
 
-  handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ newSearchValue: event.target.value });
-  };
-
-  handleSearch = async (event: FormEvent): Promise<void> => {
-    const { setLoading, updateCards, setPagination } = this.props;
-    setLoading(true);
+  const handleSearch = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
-    const newSearchValue = this.state.newSearchValue.trim();
-    localStorage.setItem('search', newSearchValue);
-    const characterService = new CharacterService();
-    const characters = await characterService.fetchCharacters(
-      { searchValue: newSearchValue },
-      setPagination
-    );
-    updateCards(characters);
-    setLoading(false);
+    const trimmedValue = newSearchValue.trim();
+    localStorage.setItem('search', trimmedValue);
+
+    setLoading(true);
+    try {
+      const characterService = new CharacterService();
+      const characters = await characterService.fetchCharacters(
+        { searchValue: trimmedValue },
+        setPagination
+      );
+      updateCards(characters);
+    } catch (error) {
+      console.error('Search error:', error);
+      updateCards([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  render(): ReactNode {
-    const { newSearchValue } = this.state;
-    return (
-      <form className="search-form" onSubmit={this.handleSearch}>
-        <input
-          id="search"
-          className="search-input"
-          type="text"
-          value={newSearchValue}
-          onChange={this.handleInputChange}
-          placeholder="enter character name"
-        />
-        <button className="search-btn" type="submit">
-          Search
-        </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className="search-form" onSubmit={handleSearch}>
+      <input
+        id="search"
+        className="search-input"
+        type="text"
+        value={newSearchValue}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setNewSearchValue(e.target.value);
+        }}
+        placeholder="enter character name"
+      />
+      <button className="search-btn" type="submit">
+        Search
+      </button>
+    </form>
+  );
+};
 
 export { Search };

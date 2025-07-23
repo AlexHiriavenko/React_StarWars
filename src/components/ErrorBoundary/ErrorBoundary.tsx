@@ -1,15 +1,10 @@
 import { Component } from 'react';
-import type { ReactNode, ErrorInfo } from 'react';
-
-interface Props {
-  children: ReactNode;
-}
 
 interface State {
   hasError: boolean;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundary extends Component<PropsWithChildren, State> {
   state: State = {
     hasError: false,
   };
