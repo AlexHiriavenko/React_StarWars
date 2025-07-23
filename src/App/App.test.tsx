@@ -10,10 +10,19 @@ import {
   afterEach,
   afterAll,
 } from 'vitest';
+import { BASE_URL } from '@/services/constants';
 import { App } from '@/App';
 import { server } from '@/mocks';
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
+const mockLocalStorage = (value: string | null) =>
+  vi.stubGlobal('localStorage', {
+    getItem: vi.fn(() => value),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+  });
 
 describe('App Component (MSW)', () => {
   beforeAll(() => {
@@ -21,12 +30,7 @@ describe('App Component (MSW)', () => {
   });
 
   beforeEach(() => {
-    vi.stubGlobal('localStorage', {
-      getItem: vi.fn(() => 'luke'),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    });
+    mockLocalStorage('luke');
 
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -71,17 +75,12 @@ describe('App Component (MSW)', () => {
 
   it('handles API failure (404)', async () => {
     server.use(
-      http.get('https://swapi.py4e.com/api/people', () => {
+      http.get(`${BASE_URL}/people`, () => {
         return HttpResponse.json({ message: 'Not Found' }, { status: 404 });
       })
     );
 
-    vi.stubGlobal('localStorage', {
-      getItem: vi.fn(() => 'fail'), // simulate bad search
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    });
+    mockLocalStorage('fail');
 
     render(<App />);
 
@@ -91,12 +90,7 @@ describe('App Component (MSW)', () => {
   });
 
   it('calls localStorage.getItem("search") and uses empty fallback when null', async () => {
-    vi.stubGlobal('localStorage', {
-      getItem: vi.fn(() => null), // if value is "null"
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    });
+    mockLocalStorage(null);
 
     render(<App />);
 

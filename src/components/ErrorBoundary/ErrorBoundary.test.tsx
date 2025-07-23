@@ -1,6 +1,14 @@
 import type { JSX } from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  type MockInstance,
+} from 'vitest';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 function ThrowingComponent(): JSX.Element {
@@ -8,7 +16,7 @@ function ThrowingComponent(): JSX.Element {
 }
 
 describe('ErrorBoundary', () => {
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let consoleErrorSpy: MockInstance;
 
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});

@@ -29,27 +29,25 @@ describe('Search Component (non-API behavior)', () => {
   it('shows saved search value from localStorage on mount', () => {
     localStorage.setItem('search', 'Luke Skywalker');
     render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-    expect(input.value).toBe('Luke Skywalker');
+    expect(screen.getByRole('textbox')).toHaveValue('Luke Skywalker');
   });
 
   it('shows empty input if no saved value in localStorage', () => {
     render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-    expect(input.value).toBe('');
+    expect(screen.getByRole('textbox')).toHaveValue('');
   });
 
   it('updates input value when user types', async () => {
     render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByRole('textbox');
     const user = userEvent.setup();
     await user.type(input, '  Leia  ');
-    expect(input.value).toBe('  Leia  ');
+    expect(screen.getByRole('textbox')).toHaveValue('  Leia  ');
   });
 
   it('saves trimmed search term to localStorage when search button is clicked', () => {
     render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: /search/i });
 
     fireEvent.change(input, { target: { value: '  Leia Organa  ' } });
@@ -61,14 +59,13 @@ describe('Search Component (non-API behavior)', () => {
   it('retrieves saved search term on component mount', () => {
     localStorage.setItem('search', 'Obi-Wan');
     render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-    expect(input.value).toBe('Obi-Wan');
+    expect(screen.getByRole('textbox')).toHaveValue('Obi-Wan');
   });
 
   it('overwrites existing localStorage value when new search is performed', () => {
     localStorage.setItem('search', 'Old Value');
     render(<Search {...defaultProps} />);
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: /search/i });
 
     fireEvent.change(input, { target: { value: '  New Search  ' } });
