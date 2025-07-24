@@ -53,8 +53,10 @@ const App = (): JSX.Element => {
 
   return (
     <>
-      <header className="header-main">
-        <h1 className="app-title">Star Wars</h1>
+      <header className="w-full py-3 bg-black text-white min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed">
+        <h1 className="text-[42px] max-xs:text-[36px] font-normal text-center font-title custom-title-effect">
+          Star Wars
+        </h1>
         <Search
           updateCards={setCards}
           setLoading={setLoading}

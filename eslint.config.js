@@ -49,7 +49,7 @@ export default tseslint.config(
         { allowExpressions: true },
       ],
       '@typescript-eslint/no-inferrable-types': 'warn',
-      '@typescript-eslint/no-confusing-void-expression': 'warn',
+      '@typescript-eslint/no-confusing-void-expression': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       'react/jsx-key': 'error',
       'import/first': 'error',

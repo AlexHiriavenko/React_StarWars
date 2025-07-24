@@ -14,11 +14,17 @@ const Card = ({ card: hero }: CardProps): JSX.Element => {
   const characterPhoto = `https://raw.githubusercontent.com/vieraboschkova/swapi-gallery/refs/heads/gh-pages/static/assets/img/people/${characterID}.jpg`;
 
   return (
-    <div className="card" role="article">
-      <h3 className="card__title">{hero.name || 'unknown'}</h3>
+    <div
+      className="w-[200px] h-[316px] overflow-y-auto text-[rgb(17,203,85)] border border-white/50 
+             bg-gradient-to-b from-black/50 to-black/40 text-shadow-sm flex flex-col items-center"
+      role="article"
+    >
+      <h3 className="my-2 text-lg font-semibold">{hero.name || 'unknown'}</h3>
+
       <p className="text-sm text-white mb-2">
         gender: {hero.gender || 'unknown'}
       </p>
+
       <img src={characterPhoto} alt="character photo" width={154} />
     </div>
   );

@@ -1,23 +1,8 @@
 #root {
-  min-height: 100vh;
-  margin: 0 auto;
-  text-align: center;
-  color: black;
   background-image: url('https://img.freepik.com/free-photo/space-background-with-fictional-planets_1048-13628.jpg?t=st=1752430095~exp=1752433695~hmac=5e7e7200178c405d552c879a57af64922dd56c639548e5b92c07ce17e37b1776&w=1800');
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 100% 114%;
-}
-
-.app-loading {
-  position: absolute;
-  font-size: 48px;
-  font-weight: 700;
-  color: rgb(17, 203, 85);
-  text-shadow: 1px 1px 1px rgb(0, 0, 0);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 1100px) {
