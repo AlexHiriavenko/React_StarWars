@@ -1,21 +1,28 @@
+import { useState } from 'react';
+import classNames from 'classnames';
 import type { Character } from '@/App/AppTypes';
 import { CharacterService } from '@/services';
 import { getIdFromURL } from '@/utils/getIDfromUrl';
 
 interface CharacterListProps {
   characters: Character[];
+  card: Character | null;
   setCard?: (card: Character | null) => void;
   setLoadingDetails?: (loading: boolean) => void;
 }
 
 const CharacterList = ({
   characters,
+  card,
   setCard,
   setLoadingDetails,
 }: CharacterListProps): JSX.Element => {
+  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+
   async function handleCharacterClick(character: Character): Promise<void> {
     setLoadingDetails?.(true);
     setCard?.(null);
+    setSelectedUrl(character.url);
     const characterService = new CharacterService();
     const characterId = getIdFromURL(character.url);
     const card = await characterService.fetchCharacter(characterId);
@@ -41,9 +48,15 @@ const CharacterList = ({
       <ul className="pl-4 pb-4">
         {characters.map((character) => (
           <li
-            className="text-white text-left mt-4 cursor-pointer text-shadow-sm"
             key={character.url}
             onClick={() => handleCharacterClick(character)}
+            className={classNames(
+              'mt-4 cursor-pointer text-left text-shadow-sm',
+              {
+                'text-accent': card && selectedUrl === character.url,
+                'text-white': !card || selectedUrl !== character.url,
+              }
+            )}
           >
             {character.name}
           </li>

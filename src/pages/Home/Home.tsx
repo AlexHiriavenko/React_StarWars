@@ -37,6 +37,7 @@ const Home = ({
       <section className="flex w-full max-w-[1090px] mx-auto mt-6 gap-4 justify-center max-xs:flex-col">
         <CharacterList
           characters={cards}
+          card={card}
           setCard={setCard}
           setLoadingDetails={setLoadingDetails}
         />
