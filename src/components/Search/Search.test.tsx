@@ -93,4 +93,32 @@ describe('Search Component (non-API behavior)', () => {
       );
     });
   });
+
+  it('handles error when fetchCharacters throws and calls updateCards with []', async () => {
+    const fetchSpy = vi
+      .spyOn(CharacterService.prototype, 'fetchCharacters')
+      .mockRejectedValue(new Error('API failed'));
+
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    render(<Search {...defaultProps} />);
+    const input = screen.getByRole('textbox');
+    const button = screen.getByRole('button', { name: /search/i });
+
+    fireEvent.change(input, { target: { value: 'Error Test' } });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalled();
+      expect(mockUpdateCards).toHaveBeenCalledWith([]);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Search error:',
+        expect.any(Error)
+      );
+    });
+
+    consoleErrorSpy.mockRestore();
+  });
 });
