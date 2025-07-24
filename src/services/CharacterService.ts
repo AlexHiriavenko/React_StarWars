@@ -1,6 +1,6 @@
 import { BaseService } from './BaseService';
 import type { Options } from './BaseService';
-import type { Character, SwapiPeopleResponse, AppState } from '../AppTypes';
+import type { Character, SwapiPeopleResponse, AppState } from '../App/AppTypes';
 
 export class CharacterService extends BaseService<SwapiPeopleResponse> {
   constructor() {
@@ -13,34 +13,26 @@ export class CharacterService extends BaseService<SwapiPeopleResponse> {
   ): Promise<Character[]> {
     const response = await this.getData(options);
 
-    if (response.results) {
-      const nextPage = response.next
-        ? new URLSearchParams(response.next).get('page')
-        : null;
-      const prevPage = response.previous
-        ? new URLSearchParams(response.previous).get('page')
-        : null;
-      const currentPage = prevPage ? Number(prevPage) + 1 : 1;
+    const nextPage = response.next
+      ? new URL(response.next).searchParams.get('page')
+      : null;
 
-      if (setPagination) {
-        setPagination({
-          nextPage,
-          prevPage,
-          total_pages: response.total_pages,
-          currentPage,
-        });
-      }
+    const prevPage = response.previous
+      ? new URL(response.previous).searchParams.get('page')
+      : null;
+    const currentPage = prevPage ? Number(prevPage) + 1 : this.defaultPage;
 
-      return response.results;
+    if (setPagination) {
+      setPagination({
+        nextPage,
+        prevPage,
+        total_pages: Math.ceil(
+          response.count / (options?.limit || this.defaultLimit)
+        ),
+        currentPage,
+      });
     }
 
-    if (response.result) {
-      const limit = 8;
-      return response.result.length > limit
-        ? response.result.slice(0, limit)
-        : response.result;
-    }
-
-    throw new Error('error: no results');
+    return response.results;
   }
 }

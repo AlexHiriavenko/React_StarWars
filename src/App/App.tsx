@@ -1,18 +1,18 @@
 import { Component } from 'react';
 import type { ReactNode } from 'react';
 import './App.css';
-import BuggyButton from './components/BuggyButton';
+import BuggyButton from '../components/ErrorBoundary/BuggyButton';
 import type { AppState, Character } from './AppTypes';
-import Home from './pages/Home';
-import Search from './components/Search/Search';
-import { CharacterService } from './services/CharacterService';
+import Home from '../pages/Home';
+import Search from '../components/Search/Search';
+import { CharacterService } from '../services/CharacterService';
 
 const initialState: AppState = {
   cards: [],
-  loading: true,
+  loading: false,
   searchParams: {
     searchValue: '',
-    searchKey: 'name',
+    searchKey: 'search',
     limit: 10,
   },
   pagination: {
@@ -41,12 +41,18 @@ class App extends Component<object, AppState> {
       }),
       async () => {
         const characterService = new CharacterService();
-        const characters = await characterService.fetchCharacters(
-          { searchValue: search },
-          this.setPagination
-        );
-        this.setCards(characters);
-        this.setState({ loading: false });
+        try {
+          const characters = await characterService.fetchCharacters(
+            { searchValue: search, page: 1 },
+            this.setPagination
+          );
+          this.setCards(characters);
+        } catch (error) {
+          console.error('Error fetching characters:', error);
+          this.setCards([]);
+        } finally {
+          this.setState({ loading: false });
+        }
       }
     );
   }

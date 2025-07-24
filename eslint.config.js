@@ -8,7 +8,9 @@ import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage'] },
+
+  // Основной конфиг для всего проекта
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -44,17 +46,24 @@ export default tseslint.config(
         'error',
         { allowExpressions: true },
       ],
-      // Предупреждает, если тип можно вывести
       '@typescript-eslint/no-inferrable-types': 'warn',
-      // Предупреждает, если функция неявно возвращает undefined
       '@typescript-eslint/no-confusing-void-expression': 'warn',
-      // отключает not-null assertion operator
       '@typescript-eslint/no-non-null-assertion': 'warn',
     },
     settings: {
       react: {
         version: 'detect',
       },
+    },
+  },
+
+  // 🔧 Спец-конфиг для тестов: разрешаем any и неявный return
+  {
+    files: ['**/*.test.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   }
 );

@@ -133,7 +133,7 @@ button:focus-visible {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1090px;
   margin: 0 auto;
   margin-top: 84px;
   row-gap: 16px;
@@ -192,6 +192,7 @@ button:focus-visible {
   outline: none;
   border: none;
   max-width: 60%;
+  background-color: rgb(40, 40, 40);
 }
 
 @media (max-width: 480px) {

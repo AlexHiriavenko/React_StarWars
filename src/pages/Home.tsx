@@ -1,5 +1,5 @@
 import { Component, type ReactNode } from 'react';
-import type { Character } from '../AppTypes';
+import type { Character } from '../App/AppTypes';
 import Card from '../components/Card/Card';
 
 interface HomeProps {
@@ -18,7 +18,7 @@ class Home extends Component<HomeProps> {
     return (
       <section className="cards">
         {cards?.length ? (
-          cards.map((card: Character) => <Card key={card.uid} card={card} />)
+          cards.map((card: Character) => <Card key={card.url} card={card} />)
         ) : (
           <p className="app-loading">No search results</p>
         )}

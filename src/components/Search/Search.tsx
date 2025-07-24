@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent, ReactNode } from 'react';
 import { Component } from 'react';
-import type { Character, AppState } from '../../AppTypes';
+import type { Character, AppState } from '../../App/AppTypes';
 import { CharacterService } from '../../services/CharacterService';
 
 interface SearchState {
@@ -22,14 +22,14 @@ class Search extends Component<SearchProps, SearchState> {
   }
 
   handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ newSearchValue: event.target.value.trim() });
+    this.setState({ newSearchValue: event.target.value });
   };
 
   handleSearch = async (event: FormEvent): Promise<void> => {
     const { setLoading, updateCards, setPagination } = this.props;
     setLoading(true);
     event.preventDefault();
-    const { newSearchValue } = this.state;
+    const newSearchValue = this.state.newSearchValue.trim();
     localStorage.setItem('search', newSearchValue);
     const characterService = new CharacterService();
     const characters = await characterService.fetchCharacters(
