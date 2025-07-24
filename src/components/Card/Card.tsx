@@ -1,33 +1,51 @@
-import type { Character } from '@/App/AppTypes';
+import type { CharacterDetails } from '@/App/AppTypes';
+import { CloseButton } from '@/components/baseComponents';
+import { Loader } from '@/components/baseComponents';
+import { getIdFromURL } from '@/utils/getIDfromUrl';
 
 interface CardProps {
-  card: Character;
+  card: CharacterDetails;
+  setCard?: (card: CharacterDetails | null) => void;
+  loadingDetails?: boolean;
 }
 
-function getCharacterID(url: string): string {
-  const parts = url.split('/').filter(Boolean);
-  return parts[parts.length - 1];
-}
+const Card = ({ card, setCard, loadingDetails }: CardProps): JSX.Element => {
+  if (!card && !loadingDetails) return null;
 
-const Card = ({ card: hero }: CardProps): JSX.Element => {
-  const characterID = getCharacterID(hero.url);
-  const characterPhoto = `https://raw.githubusercontent.com/vieraboschkova/swapi-gallery/refs/heads/gh-pages/static/assets/img/people/${characterID}.jpg`;
+  if (loadingDetails) {
+    return (
+      <div
+        className="relative w-[220px] h-[324px] overflow-y-auto text-accent border border-white/50
+                 bg-gradient-to-b from-black/50 to-black/40 text-shadow-sm flex flex-col items-center mx-auto"
+        role="article"
+      >
+        <Loader size={60} color="white" />
+      </div>
+    );
+  }
 
-  return (
-    <div
-      className="w-[200px] h-[316px] overflow-y-auto text-[rgb(17,203,85)] border border-white/50 
-             bg-gradient-to-b from-black/50 to-black/40 text-shadow-sm flex flex-col items-center"
-      role="article"
-    >
-      <h3 className="my-2 text-lg font-semibold">{hero.name || 'unknown'}</h3>
+  if (card) {
+    const characterID = getIdFromURL(card.url);
+    const characterPhoto = `https://raw.githubusercontent.com/vieraboschkova/swapi-gallery/refs/heads/gh-pages/static/assets/img/people/${characterID}.jpg`;
 
-      <p className="text-sm text-white mb-2">
-        gender: {hero.gender || 'unknown'}
-      </p>
-
-      <img src={characterPhoto} alt="character photo" width={154} />
-    </div>
-  );
+    return (
+      <div
+        className="relative w-[220px] h-[324px] overflow-y-auto text-accent border border-white/50
+                 bg-gradient-to-b from-black/50 to-black/40 text-shadow-sm flex flex-col items-center mx-auto"
+        role="article"
+      >
+        <h3 className="my-2 text-lg font-semibold">{card.name || 'unknown'}</h3>
+        <p className="text-sm text-white mb-2">
+          gender: {card.gender || 'unknown'}
+        </p>
+        <p className="text-sm text-white mb-2">
+          birth year: {card.birth_year || 'unknown'}
+        </p>
+        <img src={characterPhoto} alt="character photo" width={154} />
+        <CloseButton color="white" size={22} onClick={() => setCard?.(null)} />
+      </div>
+    );
+  }
 };
 
 export { Card };

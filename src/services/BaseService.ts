@@ -16,15 +16,15 @@ export class BaseService<T> {
     this.url = `${BASE_URL}${endpoint}`;
   }
 
-  public async getData(options: Options): Promise<T> {
-    const page = options.page || this.defaultPage;
-    const limit = options.limit || this.defaultLimit;
-    const defaultSearchKey = 'search';
-    const searchKey = options.searchKey || defaultSearchKey;
-    const searchValue = options.searchValue || '';
+  public async getData<T2 = T>(options: Options): Promise<T2> {
+    const page = options.page ?? this.defaultPage;
+    const limit = options.limit ?? this.defaultLimit;
+    const searchKey = options.searchKey ?? 'search';
+    const searchValue = options.searchValue ?? '';
+
+    const url = `${this.url}?${searchKey}=${searchValue}&page=${page}&limit=${limit}`;
 
     try {
-      const url = `${this.url}?${searchKey}=${searchValue}&page=${page}&limit=${limit}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -40,6 +40,27 @@ export class BaseService<T> {
       return await response.json();
     } catch (error) {
       console.error(`[BaseService] Ошибка при получении данных:`, error);
+      throw error;
+    }
+  }
+
+  public async getDataById<T2 = T>(id: string): Promise<T2> {
+    try {
+      const response = await fetch(`${this.url}/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Connection: 'keep-alive',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`[BaseService] Ошибка при получении данных по ID:`, error);
       throw error;
     }
   }

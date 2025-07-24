@@ -33,6 +33,8 @@ export interface Character {
   url: string;
 }
 
+export type CharacterDetails = Character | null;
+
 export interface SwapiPeopleResponse {
   count: number;
   next: string | null;

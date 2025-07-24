@@ -1,4 +1,9 @@
-import type { Character, SwapiPeopleResponse, AppState } from '@/App/AppTypes';
+import type {
+  Character,
+  SwapiPeopleResponse,
+  AppState,
+  CharacterDetails,
+} from '@/App/AppTypes';
 import type { Options } from '@/services/BaseService';
 import { BaseService } from '@/services';
 
@@ -11,7 +16,7 @@ export class CharacterService extends BaseService<SwapiPeopleResponse> {
     options: Options,
     setPagination?: (pagination: AppState['pagination']) => void
   ): Promise<Character[]> {
-    const response = await this.getData(options);
+    const response = await this.getData<SwapiPeopleResponse>(options);
 
     const nextPage = response.next
       ? new URL(response.next).searchParams.get('page')
@@ -20,6 +25,7 @@ export class CharacterService extends BaseService<SwapiPeopleResponse> {
     const prevPage = response.previous
       ? new URL(response.previous).searchParams.get('page')
       : null;
+
     const currentPage = prevPage ? Number(prevPage) + 1 : this.defaultPage;
 
     if (setPagination) {
@@ -34,5 +40,9 @@ export class CharacterService extends BaseService<SwapiPeopleResponse> {
     }
 
     return response.results;
+  }
+
+  public async fetchCharacter(id: string): Promise<CharacterDetails> {
+    return this.getDataById<Character>(id);
   }
 }

@@ -11,6 +11,7 @@ export default {
         'max-md': { max: '796px' },
       },
       colors: {
+        accent: '#11CB55',
         input: '#282828',
       },
     },

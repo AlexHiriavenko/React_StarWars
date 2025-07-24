@@ -1,7 +1,6 @@
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
 import type { AppState, Character } from '@/App/AppTypes';
-import { Search } from '@/components/Search';
 import { Home } from '@/pages/';
 import { CharacterService } from '@/services';
 
@@ -53,17 +52,18 @@ const App = (): JSX.Element => {
 
   return (
     <>
-      <header className="w-full py-3 bg-black text-white min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed">
+      <header className="w-full py-3 bg-black text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed">
         <h1 className="text-[42px] max-xs:text-[36px] font-normal text-center font-title custom-title-effect">
           Star Wars
         </h1>
-        <Search
-          updateCards={setCards}
-          setLoading={setLoading}
-          setPagination={setPagination}
-        />
       </header>
-      <Home cards={cards} loading={loading} />
+      <Home
+        cards={cards}
+        loading={loading}
+        updateCards={setCards}
+        setLoading={setLoading}
+        setPagination={setPagination}
+      />
     </>
   );
 };

@@ -1,32 +1,56 @@
+import { useState } from 'react';
 import type { Character } from '@/App/AppTypes';
+import type { AppState } from '@/App/AppTypes';
+import type { CharacterDetails } from '@/App/AppTypes';
+import { Loader } from '@/components/baseComponents';
 import { Card } from '@/components/Card';
+import { CharacterList } from '@/components/CharactersList/CharactersList';
+import { Search } from '@/components/Search';
 
 interface HomeProps {
   cards: Character[];
   loading: boolean;
+  setLoading: (loading: boolean) => void;
+  updateCards: (cards: Character[]) => void;
+  setPagination: (pagination: AppState['pagination']) => void;
 }
 
-const Home = ({ cards, loading }: HomeProps): JSX.Element => {
-  if (loading)
-    return (
-      <p className="absolute text-[48px] font-bold text-green-500 drop-shadow-sm top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        Loading...
-      </p>
-    );
+const Home = ({
+  cards,
+  loading,
+  setLoading,
+  updateCards,
+  setPagination,
+}: HomeProps): JSX.Element => {
+  const [card, setCard] = useState<CharacterDetails>(null);
+  const [loadingDetails, setLoadingDetails] = useState(false);
 
-  const content =
-    cards.length > 0 ? (
-      cards.map((card) => <Card key={card.url} card={card} />)
-    ) : (
-      <p className="absolute text-[48px] font-bold text-green-500 drop-shadow-sm top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        No search results
-      </p>
-    );
+  if (loading) return <Loader size={80} color="white" />;
 
   return (
-    <section className="flex flex-wrap w-full max-w-[1090px] mx-auto mt-[84px] max-md:mt-[136px] mb-2 gap-y-4 gap-x-3 justify-center">
-      {content}
-    </section>
+    <div className="mt-[84px] min-h-[calc(100vh-84px)] max-md:mt-[136px] max-md:min-h-[calc(100vh-136px)]">
+      <Search
+        updateCards={updateCards}
+        setLoading={setLoading}
+        setPagination={setPagination}
+      />
+      <section className="flex w-full max-w-[1090px] mx-auto mt-6 gap-4 justify-center max-xs:flex-col">
+        <CharacterList
+          characters={cards}
+          setCard={setCard}
+          setLoadingDetails={setLoadingDetails}
+        />
+        {(card || loadingDetails) && (
+          <div className="w-[40%] max-xs:w-full">
+            <Card
+              card={card}
+              setCard={setCard}
+              loadingDetails={loadingDetails}
+            />
+          </div>
+        )}
+      </section>
+    </div>
   );
 };
 
