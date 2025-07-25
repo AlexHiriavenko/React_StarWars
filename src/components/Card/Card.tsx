@@ -5,13 +5,11 @@ import { getIdFromURL } from '@/utils/getIDfromUrl';
 
 interface CardProps {
   card: CharacterDetails;
-  setCard?: (card: CharacterDetails | null) => void;
+  closeCard: () => void;
   loadingDetails?: boolean;
 }
 
-const Card = ({ card, setCard, loadingDetails }: CardProps): JSX.Element => {
-  // if (!card && !loadingDetails) return null;
-
+const Card = ({ card, closeCard, loadingDetails }: CardProps): JSX.Element => {
   if (loadingDetails) {
     return (
       <div
@@ -30,8 +28,8 @@ const Card = ({ card, setCard, loadingDetails }: CardProps): JSX.Element => {
 
     return (
       <div
-        className="relative w-[220px] h-[324px] overflow-y-auto text-accent border border-white/50
-                 bg-gradient-to-b from-black/50 to-black/40 text-shadow-sm flex flex-col items-center mx-auto"
+        className="relative w-[230px] h-[344px] overflow-y-auto text-accent
+                 bg-gradient-to-b from-black/60 to-black/50 text-shadow-sm flex flex-col items-center mx-auto"
         role="article"
       >
         <h3 className="my-2 text-lg font-semibold">{card.name || 'unknown'}</h3>
@@ -42,7 +40,7 @@ const Card = ({ card, setCard, loadingDetails }: CardProps): JSX.Element => {
           birth year: {card.birth_year || 'unknown'}
         </p>
         <img src={characterPhoto} alt="character photo" width={154} />
-        <CloseButton color="white" size={22} onClick={() => setCard?.(null)} />
+        <CloseButton color="white" size={22} onClick={closeCard} />
       </div>
     );
   }

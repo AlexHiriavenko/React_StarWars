@@ -12,7 +12,7 @@ export default {
       },
       colors: {
         accent: '#11CB55',
-        input: '#282828',
+        input: '#3b3b3b',
       },
     },
   },

@@ -18,10 +18,6 @@ export class CharacterService extends BaseService<SwapiPeopleResponse> {
   ): Promise<Character[]> {
     const response = await this.getData<SwapiPeopleResponse>(options);
 
-    const nextPage = response.next
-      ? new URL(response.next).searchParams.get('page')
-      : null;
-
     const prevPage = response.previous
       ? new URL(response.previous).searchParams.get('page')
       : null;
@@ -30,8 +26,6 @@ export class CharacterService extends BaseService<SwapiPeopleResponse> {
 
     if (setPagination) {
       setPagination({
-        nextPage,
-        prevPage,
         total_pages: Math.ceil(
           response.count / (options?.limit || this.defaultLimit)
         ),

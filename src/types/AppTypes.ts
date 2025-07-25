@@ -8,8 +8,6 @@ export interface AppState {
   };
   pagination: {
     currentPage?: number;
-    nextPage: string | null;
-    prevPage: string | null;
     total_pages: number;
   };
 }

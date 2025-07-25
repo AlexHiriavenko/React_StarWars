@@ -5,16 +5,23 @@ import { getIdFromURL } from '@/utils/getIDfromUrl';
 
 interface CharacterListProps {
   characters: Character[];
+  searchParams?: URLSearchParams;
 }
 
-const CharacterList = ({ characters }: CharacterListProps): JSX.Element => {
+const CharacterList = ({
+  characters,
+  searchParams,
+}: CharacterListProps): JSX.Element => {
   const navigate = useNavigate();
   const match = useMatch('/details/:id');
   const selectedId = match?.params.id;
 
   const handleCharacterClick = (character: Character): void => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const paramsObject = Object.fromEntries(queryParams.entries());
+    console.log(paramsObject);
     const characterId = getIdFromURL(character.url);
-    navigate(`details/${characterId}`);
+    navigate(`details/${characterId}?${searchParams?.toString()}`);
   };
 
   if (!characters || characters.length === 0) {
@@ -28,7 +35,7 @@ const CharacterList = ({ characters }: CharacterListProps): JSX.Element => {
   }
 
   return (
-    <div className="w-[40%] max-xs:w-full min-h-[400px] bg-gradient-to-b from-black/50 to-black/40">
+    <div className="w-[40%] max-xs:w-full min-h-[476px] max-w-[360px] bg-gradient-to-b from-black/70 to-black/60">
       <h3 className="text-white py-4 text-lg font-bold text-shadow-sm">
         Characters
       </h3>

@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import type { CharacterDetails } from '@/types/AppTypes';
 import { Card } from '@/components/Card';
 import { CharacterService } from '@/services';
+
+function useSearchParamsFromOutlet(): { searchParams: URLSearchParams } {
+  return useOutletContext<{ searchParams: URLSearchParams }>();
+}
 
 export default function CharacterDetailsRoute(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const [card, setCard] = useState<CharacterDetails | null>(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const navigate = useNavigate();
+  const { searchParams } = useSearchParamsFromOutlet();
 
   useEffect(() => {
     if (!id) return;
@@ -28,7 +34,7 @@ export default function CharacterDetailsRoute(): JSX.Element {
     <Card
       card={card}
       loadingDetails={loadingDetails}
-      setCard={() => navigate('/')}
+      closeCard={() => navigate(`/?${searchParams.toString()}`)}
     />
   );
 }

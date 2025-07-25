@@ -6,12 +6,14 @@ interface SearchProps {
   updateCards: (newCards: Character[]) => void;
   setLoading: (bool: boolean) => void;
   setPagination: (pagination: AppState['pagination']) => void;
+  setSearchParams: (params: URLSearchParams) => void;
 }
 
 const Search = ({
   updateCards,
   setLoading,
   setPagination,
+  setSearchParams,
 }: SearchProps): JSX.Element => {
   const [newSearchValue, setNewSearchValue] = useState(() => {
     return localStorage.getItem('search') || '';
@@ -21,6 +23,15 @@ const Search = ({
     event.preventDefault();
     const trimmedValue = newSearchValue.trim();
     localStorage.setItem('search', trimmedValue);
+    const newParams = new URLSearchParams();
+    newParams.set('page', '1');
+    if (trimmedValue) {
+      newParams.set('search', trimmedValue);
+    } else {
+      newParams.delete('search');
+    }
+
+    setSearchParams(newParams);
 
     setLoading(true);
     try {
@@ -49,7 +60,7 @@ const Search = ({
         placeholder="enter character name"
         value={newSearchValue}
         onChange={(e) => setNewSearchValue(e.target.value)}
-        className="px-3 py-2 text-white w-[300px] max-w-[60%] rounded-[12px] outline-none border-none bg-input max-xs:max-w-[60%]"
+        className="px-3 py-2 text-white w-[300px] max-w-[60%] rounded-[12px] outline-none border border-gray-400/70 bg-input max-xs:max-w-[60%]"
       />
 
       <button
