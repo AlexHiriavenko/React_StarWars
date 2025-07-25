@@ -1,4 +1,4 @@
-import type { CharacterDetails } from '@/App/AppTypes';
+import type { CharacterDetails } from '@/types/AppTypes';
 import { CloseButton } from '@/components/baseComponents';
 import { Loader } from '@/components/baseComponents';
 import { getIdFromURL } from '@/utils/getIDfromUrl';
@@ -10,7 +10,7 @@ interface CardProps {
 }
 
 const Card = ({ card, setCard, loadingDetails }: CardProps): JSX.Element => {
-  if (!card && !loadingDetails) return null;
+  // if (!card && !loadingDetails) return null;
 
   if (loadingDetails) {
     return (

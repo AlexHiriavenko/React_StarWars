@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import type { Character, AppState } from '@/App/AppTypes';
+import type { Character, AppState } from '@/types/AppTypes';
 import { CharacterService } from '@/services';
 
 interface SearchProps {

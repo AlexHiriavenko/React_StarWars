@@ -1,5 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
-import type { SwapiPeopleResponse } from '@/App/AppTypes';
+import type { SwapiPeopleResponse } from '@/types/AppTypes';
 import { BASE_URL } from '@/services/constants';
 
 const mockCharacterResponse: SwapiPeopleResponse = {

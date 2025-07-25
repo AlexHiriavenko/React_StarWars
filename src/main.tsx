@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@/styles/index.css';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { App } from '@/App';
+import AppRouter from '@/router';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element not found');
@@ -10,7 +10,7 @@ if (!root) throw new Error('Root element not found');
 createRoot(root).render(
   <StrictMode>
     <ErrorBoundary>
-      <App />
+      <AppRouter />
     </ErrorBoundary>
   </StrictMode>
 );

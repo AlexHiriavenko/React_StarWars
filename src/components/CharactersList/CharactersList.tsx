@@ -1,34 +1,21 @@
-import { useState } from 'react';
 import classNames from 'classnames';
-import type { Character } from '@/App/AppTypes';
-import { CharacterService } from '@/services';
+import { useNavigate, useMatch } from 'react-router-dom';
+import type { Character } from '@/types/AppTypes';
 import { getIdFromURL } from '@/utils/getIDfromUrl';
 
 interface CharacterListProps {
   characters: Character[];
-  card: Character | null;
-  setCard?: (card: Character | null) => void;
-  setLoadingDetails?: (loading: boolean) => void;
 }
 
-const CharacterList = ({
-  characters,
-  card,
-  setCard,
-  setLoadingDetails,
-}: CharacterListProps): JSX.Element => {
-  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+const CharacterList = ({ characters }: CharacterListProps): JSX.Element => {
+  const navigate = useNavigate();
+  const match = useMatch('/details/:id');
+  const selectedId = match?.params.id;
 
-  async function handleCharacterClick(character: Character): Promise<void> {
-    setLoadingDetails?.(true);
-    setCard?.(null);
-    setSelectedUrl(character.url);
-    const characterService = new CharacterService();
+  const handleCharacterClick = (character: Character): void => {
     const characterId = getIdFromURL(character.url);
-    const card = await characterService.fetchCharacter(characterId);
-    setCard?.(card || null);
-    setLoadingDetails?.(false);
-  }
+    navigate(`details/${characterId}`);
+  };
 
   if (!characters || characters.length === 0) {
     return (
@@ -46,21 +33,26 @@ const CharacterList = ({
         Characters
       </h3>
       <ul className="pl-4 pb-4">
-        {characters.map((character) => (
-          <li
-            key={character.url}
-            onClick={() => handleCharacterClick(character)}
-            className={classNames(
-              'mt-4 cursor-pointer text-left text-shadow-sm',
-              {
-                'text-accent': card && selectedUrl === character.url,
-                'text-white': !card || selectedUrl !== character.url,
-              }
-            )}
-          >
-            {character.name}
-          </li>
-        ))}
+        {characters.map((character) => {
+          const characterId = getIdFromURL(character.url);
+          const isSelected = selectedId === characterId;
+
+          return (
+            <li
+              key={character.url}
+              onClick={() => handleCharacterClick(character)}
+              className={classNames(
+                'mt-4 cursor-pointer text-left text-shadow-sm',
+                {
+                  'text-accent': isSelected,
+                  'text-white': !isSelected,
+                }
+              )}
+            >
+              {character.name}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

@@ -3,7 +3,7 @@ import type {
   SwapiPeopleResponse,
   AppState,
   CharacterDetails,
-} from '@/App/AppTypes';
+} from '@/types/AppTypes';
 import type { Options } from '@/services/BaseService';
 import { BaseService } from '@/services';
 

@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 
 interface LoaderProps {
   size?: number;
@@ -6,7 +6,10 @@ interface LoaderProps {
 }
 
 const Loader: React.FC<LoaderProps> = ({ size = 80, color = '#FF156D' }) => {
-  const gradientId = useId();
+  const strokeWidth = 15;
+  const radius = 70;
+  const dashArray = 200;
+  const dashOffset = 0;
 
   return (
     <div
@@ -14,56 +17,35 @@ const Loader: React.FC<LoaderProps> = ({ size = 80, color = '#FF156D' }) => {
       style={{ width: `${size}px`, height: `${size}px` }}
       aria-label="Loading"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-        <radialGradient
-          id={gradientId}
-          cx=".66"
-          fx=".66"
-          cy=".3125"
-          fy=".3125"
-          gradientTransform="scale(1.5)"
-        >
-          <stop offset="0" stopColor={color} />
-          <stop offset=".3" stopColor={color} stopOpacity=".9" />
-          <stop offset=".6" stopColor={color} stopOpacity=".6" />
-          <stop offset=".8" stopColor={color} stopOpacity=".3" />
-          <stop offset="1" stopColor={color} stopOpacity="0" />
-        </radialGradient>
-
+      <svg
+        viewBox="0 0 200 200"
+        style={{
+          width: '100%',
+          height: '100%',
+          animation: 'spin 1.5s linear infinite',
+        }}
+      >
         <circle
-          style={{ transformOrigin: 'center' }}
-          fill="none"
-          stroke={`url(#${gradientId})`}
-          strokeWidth="15"
-          strokeLinecap="round"
-          strokeDasharray="200 1000"
-          strokeDashoffset="0"
           cx="100"
           cy="100"
-          r="70"
-        >
-          <animateTransform
-            type="rotate"
-            attributeName="transform"
-            calcMode="spline"
-            dur="2"
-            values="360;0"
-            keyTimes="0;1"
-            keySplines="0 0 1 1"
-            repeatCount="indefinite"
-          />
-        </circle>
-
-        <circle
-          style={{ transformOrigin: 'center' }}
+          r={radius}
           fill="none"
-          opacity=".2"
           stroke={color}
-          strokeWidth="15"
+          strokeWidth={strokeWidth}
           strokeLinecap="round"
+          strokeOpacity={1}
+          strokeDasharray={dashArray}
+          strokeDashoffset={dashOffset}
+        />
+        <circle
           cx="100"
           cy="100"
-          r="70"
+          r={radius}
+          fill="none"
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          opacity={0.2}
         />
       </svg>
     </div>
