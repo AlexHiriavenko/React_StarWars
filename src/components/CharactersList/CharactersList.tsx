@@ -1,6 +1,7 @@
 import type { Character } from '@/types/AppTypes';
 import classNames from 'classnames';
 import { useNavigate, useMatch } from 'react-router-dom';
+import { AppRoutes } from '@/router/AppRoutes';
 import { getIdFromURL } from '@/utils';
 
 interface CharacterListProps {
@@ -17,11 +18,8 @@ const CharacterList = ({
   const selectedId = match?.params.id;
 
   const handleCharacterClick = (character: Character): void => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const paramsObject = Object.fromEntries(queryParams.entries());
-    console.log(paramsObject);
     const characterId = getIdFromURL(character.url);
-    navigate(`details/${characterId}?${searchParams?.toString()}`);
+    navigate(`${AppRoutes.DETAILS}/${characterId}?${searchParams?.toString()}`);
   };
 
   if (!characters || characters.length === 0) {

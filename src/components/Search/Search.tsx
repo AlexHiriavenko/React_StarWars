@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLS } from '@/hooks/useLS';
+import { AppRoutes } from '@/router/AppRoutes';
 
 interface SearchProps {
   setSearchParams: (params: URLSearchParams) => void;
@@ -27,7 +28,7 @@ const Search = ({ setSearchParams }: SearchProps): JSX.Element => {
     } else {
       newParams.delete('search');
     }
-    const isOutlet = location.pathname.includes('details');
+    const isOutlet = location.pathname.includes(AppRoutes.DETAILS);
     if (isOutlet) navigate('/');
     setSearchParams(newParams);
   };

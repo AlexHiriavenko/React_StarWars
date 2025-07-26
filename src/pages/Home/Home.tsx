@@ -12,6 +12,7 @@ import { Loader } from '@/components/baseComponents';
 import { CharacterList } from '@/components/CharactersList/CharactersList';
 import Pagination from '@/components/Pagination/Pagination';
 import { Search } from '@/components/Search';
+import { AppRoutes } from '@/router/AppRoutes';
 import { CharacterService } from '@/services';
 
 const initialState: AppState = {
@@ -56,7 +57,7 @@ export default function Home(): JSX.Element {
   };
 
   const handlePageChange = (page: number): void => {
-    const isOutlet = location.pathname.includes('details');
+    const isOutlet = location.pathname.includes(AppRoutes.DETAILS);
     if (isOutlet) navigate('/');
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
