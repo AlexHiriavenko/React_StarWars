@@ -1,6 +1,6 @@
 import { lazy } from 'react';
-import CharacterDetails from '@/components/CharacterDetails/CharacterDetails';
-import MainLayout from '@/router/MainLayout';
+import { CharacterDetailsRoute } from '@/components/CharacterDetailsRoute';
+import { MainLayout } from '@/router/';
 const Home = lazy(() => import('@/pages/Home/Home'));
 const About = lazy(() => import('../pages/About/About'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
@@ -16,7 +16,7 @@ export const routes = [
         children: [
           {
             path: 'details/:id',
-            element: <CharacterDetails />, // содержит <Card />
+            element: <CharacterDetailsRoute />, // содержит <Card />
           },
         ],
       },

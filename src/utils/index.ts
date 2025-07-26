@@ -1,0 +1,1 @@
+export { getIdFromURL } from './getIDfromUrl';

@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 
-export default function MainLayout(): JSX.Element {
+export function MainLayout(): JSX.Element {
   const location = useLocation();
 
   return (

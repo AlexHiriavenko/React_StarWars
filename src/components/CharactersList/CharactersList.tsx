@@ -1,7 +1,7 @@
+import type { Character } from '@/types/AppTypes';
 import classNames from 'classnames';
 import { useNavigate, useMatch } from 'react-router-dom';
-import type { Character } from '@/types/AppTypes';
-import { getIdFromURL } from '@/utils/getIDfromUrl';
+import { getIdFromURL } from '@/utils';
 
 interface CharacterListProps {
   characters: Character[];
@@ -39,7 +39,7 @@ const CharacterList = ({
       <h3 className="text-white py-4 text-lg font-bold text-shadow-sm">
         Characters
       </h3>
-      <ul className="pl-4 pb-4">
+      <ul className="px-4 pb-4">
         {characters.map((character) => {
           const characterId = getIdFromURL(character.url);
           const isSelected = selectedId === characterId;
@@ -49,7 +49,7 @@ const CharacterList = ({
               key={character.url}
               onClick={() => handleCharacterClick(character)}
               className={classNames(
-                'mt-4 cursor-pointer text-left text-shadow-sm',
+                'mt-4 cursor-pointer text-left text-shadow-sm hover:bg-white/10 py-1/4',
                 {
                   'text-accent': isSelected,
                   'text-white': !isSelected,

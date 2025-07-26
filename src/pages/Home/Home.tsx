@@ -1,6 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Outlet } from 'react-router-dom';
+import type { QueryParams } from '@/services/types';
 import type { Character, AppState } from '@/types/AppTypes';
+import { useState, useEffect } from 'react';
+import {
+  useSearchParams,
+  useNavigate,
+  Outlet,
+  useLocation,
+} from 'react-router-dom';
+import { useLS } from '@/hooks/useLS';
 import { Loader } from '@/components/baseComponents';
 import { CharacterList } from '@/components/CharactersList/CharactersList';
 import Pagination from '@/components/Pagination/Pagination';
@@ -27,93 +34,77 @@ export default function Home(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(initialState.loading);
   const [pagination, setPagination] = useState(initialState.pagination);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { getLS, setLS } = useLS();
+  const location = useLocation();
 
-  useEffect(() => {
-    const fetchCharacters = async (): Promise<void> => {
-      const initialSearch = searchParams.get('search');
-      if (initialSearch) {
-        localStorage.setItem('search', initialSearch);
-      }
-      const search = localStorage.getItem('search') || '';
-      const page = parseInt(searchParams.get('page') || '1');
-      const characterService = new CharacterService();
-
-      setSearchParams((prev) => {
-        const newParams = new URLSearchParams(prev);
-        if (page) {
-          newParams.set('page', page.toString());
-        } else {
-          newParams.delete('page');
-        }
-
-        if (search) {
-          newParams.set('search', search);
-        } else {
-          newParams.delete('search');
-        }
-        return newParams;
+  const getCharacters = async (queryParams: QueryParams): Promise<void> => {
+    setLoading(true);
+    const characterService = new CharacterService();
+    try {
+      const response = await characterService.fetchCharacters(queryParams);
+      const totalPages = Math.ceil(response.count / (queryParams.limit || 10));
+      setPagination({
+        currentPage: queryParams.page || 1,
+        total_pages: totalPages,
       });
-
-      setLoading(true);
-      try {
-        const characters = await characterService.fetchCharacters(
-          { searchValue: search, page },
-          setPagination
-        );
-        setCards(characters);
-      } catch (error) {
-        console.error('Error fetching characters:', error);
-        setCards([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCharacters();
-  }, [searchParams, setSearchParams]);
+      setCards(response.results || []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePageChange = (page: number): void => {
-    navigate('/');
-    setPagination((prev) => ({
-      ...prev,
-      currentPage: page,
-    }));
+    const isOutlet = location.pathname.includes('details');
+    if (isOutlet) navigate('/');
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set('page', page.toString());
+      return newParams;
+    });
+  };
+
+  useEffect(() => {
+    const initialSearch = searchParams.get('search');
+    if (initialSearch) {
+      setLS('search', initialSearch);
+    }
+
+    const searchValue = getLS<string>('search') || '';
+    const page = parseInt(searchParams.get('page') || '1');
 
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
-      const search = localStorage.getItem('search');
       newParams.set('page', page.toString());
-      if (search) {
-        newParams.set('search', search);
+      if (searchValue) {
+        newParams.set('search', searchValue);
       } else {
         newParams.delete('search');
       }
       return newParams;
     });
-  };
 
-  if (loading) {
-    return (
-      <div className="relative w-full h-[calc(100vh-84px)] max-md:h-[calc(100vh-136px)] flex items-center justify-center">
-        <Loader size={80} color="white" />
-      </div>
-    );
-  }
+    getCharacters({ searchValue, page });
+  }, [searchParams, setSearchParams, getLS, setLS]);
 
   return (
     <div className="min-h-[calc(100vh-84px)] max-md:min-h-[calc(100vh-136px)] pt-10">
-      <Search
-        updateCards={setCards}
-        setLoading={setLoading}
-        setPagination={setPagination}
-        setSearchParams={setSearchParams}
-      />
+      <Search setSearchParams={setSearchParams} />
+
       <section className="flex w-full max-w-[1090px] mx-auto mt-6 gap-4 justify-center max-xs:flex-col">
-        <CharacterList characters={cards} searchParams={searchParams} />
+        <div className="w-[60%] max-xs:w-full min-h-[500px] flex justify-center">
+          {loading && <Loader size={60} color="white" />}
+          {!loading && (
+            <CharacterList characters={cards} searchParams={searchParams} />
+          )}
+        </div>
+
         <div className="w-[40%] max-xs:w-full">
           <Outlet context={{ searchParams }} />
         </div>
       </section>
+
       <Pagination
         currentPage={pagination.currentPage || 1}
         totalPages={pagination.total_pages || 1}

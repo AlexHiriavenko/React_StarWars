@@ -1,14 +1,15 @@
 import { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Loader } from '@/components/baseComponents';
-import { routes } from './routes';
+import { routes } from '@/router';
 
 const router = createBrowserRouter(routes);
 
-export default function AppRouter(): ReactElement {
+function AppRouter(): ReactElement {
   return (
-    <Suspense fallback={<Loader size={100} color="white" />}>
+    <Suspense fallback={<div>...</div>}>
       <RouterProvider router={router} />
     </Suspense>
   );
 }
+
+export { AppRouter };

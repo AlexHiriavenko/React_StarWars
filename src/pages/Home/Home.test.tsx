@@ -1,6 +1,6 @@
+import type { Character } from '@/types/AppTypes';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import type { Character } from '@/types/AppTypes';
 import { Home } from '@/pages/Home';
 
 describe('Home Component - Rendering', () => {

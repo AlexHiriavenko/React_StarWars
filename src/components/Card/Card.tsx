@@ -1,10 +1,9 @@
-import type { CharacterDetails } from '@/types/AppTypes';
-import { CloseButton } from '@/components/baseComponents';
-import { Loader } from '@/components/baseComponents';
-import { getIdFromURL } from '@/utils/getIDfromUrl';
+import type { Character } from '@/types/AppTypes';
+import { Loader, CloseButton } from '@/components/baseComponents';
+import { getIdFromURL } from '@/utils';
 
 interface CardProps {
-  card: CharacterDetails;
+  card: Character | null;
   closeCard: () => void;
   loadingDetails?: boolean;
 }

@@ -60,14 +60,19 @@ export default tseslint.config(
         {
           groups: [
             'index',
+            'type', // import type
             'builtin', // node и react
             'external', // lodash, axios
-            'type', // import type
             'internal', // @/hooks и прочее
             ['parent', 'sibling', 'index'], // относительные
             'object',
           ],
           pathGroups: [
+            {
+              pattern: '**/*types',
+              group: 'type',
+              position: 'before',
+            },
             {
               pattern: '**/*.css',
               group: 'index',

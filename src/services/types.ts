@@ -1,18 +1,11 @@
-export interface AppState {
-  cards: Character[];
-  loading: boolean;
-  searchParams: {
-    searchValue: string;
-    searchKey: string;
-    limit: number;
-  };
-  pagination: {
-    currentPage?: number;
-    total_pages: number;
-  };
+export interface QueryParams {
+  page?: number;
+  limit?: number;
+  searchKey?: string;
+  searchValue?: string;
 }
 
-export interface Character {
+export interface CharacterResponse {
   name: string;
   height?: string;
   mass?: string;
@@ -29,4 +22,11 @@ export interface Character {
   created?: string;
   edited?: string;
   url: string;
+}
+
+export interface CharactersResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: CharacterResponse[];
 }

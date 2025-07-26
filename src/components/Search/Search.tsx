@@ -1,52 +1,35 @@
-import { useState, type FormEvent } from 'react';
-import type { Character, AppState } from '@/types/AppTypes';
-import { CharacterService } from '@/services';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useLS } from '@/hooks/useLS';
 
 interface SearchProps {
-  updateCards: (newCards: Character[]) => void;
-  setLoading: (bool: boolean) => void;
-  setPagination: (pagination: AppState['pagination']) => void;
   setSearchParams: (params: URLSearchParams) => void;
 }
 
-const Search = ({
-  updateCards,
-  setLoading,
-  setPagination,
-  setSearchParams,
-}: SearchProps): JSX.Element => {
-  const [newSearchValue, setNewSearchValue] = useState(() => {
-    return localStorage.getItem('search') || '';
-  });
+const Search = ({ setSearchParams }: SearchProps): JSX.Element => {
+  const { getLS, setLS } = useLS();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [newSearchValue, setNewSearchValue] = useState(
+    () => getLS<string>('search') || ''
+  );
 
   const handleSearch = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
     const trimmedValue = newSearchValue.trim();
-    localStorage.setItem('search', trimmedValue);
+    setLS('search', trimmedValue);
     const newParams = new URLSearchParams();
-    newParams.set('page', '1');
+    const startPage = '1';
+    newParams.set('page', startPage);
     if (trimmedValue) {
       newParams.set('search', trimmedValue);
     } else {
       newParams.delete('search');
     }
-
+    const isOutlet = location.pathname.includes('details');
+    if (isOutlet) navigate('/');
     setSearchParams(newParams);
-
-    setLoading(true);
-    try {
-      const characterService = new CharacterService();
-      const characters = await characterService.fetchCharacters(
-        { searchValue: trimmedValue },
-        setPagination
-      );
-      updateCards(characters);
-    } catch (error) {
-      console.error('Search error:', error);
-      updateCards([]);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
