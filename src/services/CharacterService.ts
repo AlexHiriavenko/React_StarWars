@@ -1,46 +1,22 @@
-import { BaseService } from './BaseService';
-import type { Options } from './BaseService';
-import type { Character, SwapiPeopleResponse, AppState } from '../AppTypes';
+import type {
+  QueryParams,
+  CharacterResponse,
+  CharactersResponse,
+} from '@/services/types';
+import { BaseService } from '@/services';
 
-export class CharacterService extends BaseService<SwapiPeopleResponse> {
+export class CharacterService extends BaseService<CharactersResponse> {
   constructor() {
     super('people');
   }
 
   public async fetchCharacters(
-    options: Options,
-    setPagination?: (pagination: AppState['pagination']) => void
-  ): Promise<Character[]> {
-    const response = await this.getData(options);
+    queryParams: QueryParams
+  ): Promise<CharactersResponse> {
+    return await this.getData<CharactersResponse>(queryParams);
+  }
 
-    if (response.results) {
-      const nextPage = response.next
-        ? new URLSearchParams(response.next).get('page')
-        : null;
-      const prevPage = response.previous
-        ? new URLSearchParams(response.previous).get('page')
-        : null;
-      const currentPage = prevPage ? Number(prevPage) + 1 : 1;
-
-      if (setPagination) {
-        setPagination({
-          nextPage,
-          prevPage,
-          total_pages: response.total_pages,
-          currentPage,
-        });
-      }
-
-      return response.results;
-    }
-
-    if (response.result) {
-      const limit = 8;
-      return response.result.length > limit
-        ? response.result.slice(0, limit)
-        : response.result;
-    }
-
-    throw new Error('error: no results');
+  public async fetchCharacter(id: string): Promise<CharacterResponse> {
+    return await this.getDataById<CharacterResponse>(id);
   }
 }

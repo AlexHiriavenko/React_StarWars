@@ -1,0 +1,29 @@
+@import './normalize.css';
+
+.video-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(to bottom, #111827, #000000);
+}
+
+/* postcss */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .custom-title-effect {
+    background-size: 200%;
+    text-shadow:
+      10px 10px 30px #ff0000,
+      -10px -10px 30px #8b3dff;
+    -webkit-text-stroke: 2px #986161;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-shadow-sm {
+    text-shadow: 1px 1px 1px #000000;
+  }
+}

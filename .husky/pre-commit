@@ -1,1 +1,13 @@
-npm run lint
+echo "🔍 Running ESLint..."
+npm run lint || {
+  echo "❌ Lint failed. Fix the issues before committing."
+  exit 1
+}
+
+# echo "🧪 Running Vitest with coverage..."
+# npm run test:coverage || {
+#   echo "❌ Tests failed or coverage thresholds not met."
+#   exit 1
+# }
+
+# echo "✅ Pre-commit checks passed!"
