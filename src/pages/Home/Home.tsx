@@ -95,7 +95,7 @@ export default function Home(): JSX.Element {
 
       <section className="flex w-full max-w-[1090px] mx-auto mt-6 gap-4 justify-center max-xs:flex-col">
         <div className="w-[60%] max-xs:w-full min-h-[500px] flex justify-center">
-          {loading && <Loader size={60} color="white" />}
+          {loading && <Loader size={60} />}
           {!loading && (
             <CharacterList characters={cards} searchParams={searchParams} />
           )}

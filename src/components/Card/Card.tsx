@@ -16,7 +16,7 @@ const Card = ({ card, closeCard, loadingDetails }: CardProps): JSX.Element => {
                  bg-gradient-to-b from-black/50 to-black/40 text-shadow-sm flex flex-col items-center mx-auto"
         role="article"
       >
-        <Loader size={60} color="white" />
+        <Loader size={40} />
       </div>
     );
   }
