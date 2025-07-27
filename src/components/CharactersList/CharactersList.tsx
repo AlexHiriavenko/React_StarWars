@@ -22,7 +22,7 @@ const CharacterList = ({
     navigate(`${AppRoutes.DETAILS}/${characterId}?${searchParams?.toString()}`);
   };
 
-  if (!characters || characters.length === 0) {
+  if (!characters?.length) {
     return (
       <div className="w-[40%] max-xs:w-full min-h-[400px] bg-gradient-to-b from-black/50 to-black/40 mx-auto">
         <h3 className="text-white py-4 px-2 text-lg font-bold text-shadow-sm">
