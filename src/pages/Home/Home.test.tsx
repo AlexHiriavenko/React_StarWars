@@ -15,17 +15,9 @@ import Home from './Home';
 import { server } from '@/mocks/server';
 
 describe('Home component', () => {
-  beforeAll(() => {
-    server.listen();
-  });
-
-  afterAll(() => {
-    server.close();
-  });
-
-  afterEach(() => {
-    server.resetHandlers();
-  });
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
   it('renders Home and displays character list from API', async () => {
     render(
