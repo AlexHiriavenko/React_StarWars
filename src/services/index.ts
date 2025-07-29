@@ -1,2 +1,2 @@
-export { BaseService } from '@/services/BaseService';
-export { CharacterService } from '@/services/CharacterService';
+export { BaseService } from './BaseService.ts';
+export { CharacterService } from './CharacterService.ts';

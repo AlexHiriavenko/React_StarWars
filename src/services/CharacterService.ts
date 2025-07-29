@@ -3,7 +3,7 @@ import type {
   CharacterResponse,
   CharactersResponse,
 } from '@/services/types';
-import { BaseService } from '@/services';
+import { BaseService } from './BaseService';
 
 export class CharacterService extends BaseService<CharactersResponse> {
   constructor() {

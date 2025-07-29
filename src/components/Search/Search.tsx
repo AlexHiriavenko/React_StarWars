@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLS } from '@/hooks/useLS';
+import { useLS } from '@/hooks';
 import { AppRoutes } from '@/router/AppRoutes';
 
 interface SearchProps {

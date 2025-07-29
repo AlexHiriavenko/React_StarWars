@@ -7,11 +7,11 @@ import {
   Outlet,
   useLocation,
 } from 'react-router-dom';
-import { useLS } from '@/hooks/useLS';
 import { Loader } from '@/components/baseComponents';
 import { CharacterList } from '@/components/CharactersList/CharactersList';
 import Pagination from '@/components/Pagination/Pagination';
 import { Search } from '@/components/Search';
+import { useLS } from '@/hooks';
 import { AppRoutes } from '@/router/AppRoutes';
 import { CharacterService } from '@/services';
 
