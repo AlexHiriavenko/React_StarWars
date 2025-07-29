@@ -49,12 +49,12 @@ button {
 
 a {
   font-weight: 500;
-  color: hsl(239, 100%, 70%); /* #646cff */
   text-decoration: inherit;
+  transition: filter 0.2s ease;
 }
 
 a:hover {
-  color: hsl(239, 83%, 63%); /* #535bf2 */
+  filter: brightness(80%);
 }
 
 body {
@@ -64,7 +64,6 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
   line-height: 1.1;
 }
 

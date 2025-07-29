@@ -1,0 +1,17 @@
+{
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "editor.formatOnSave": true,
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ],
+  "files.associations": {
+  "*.css": "tailwindcss",
+  "*.scss": "tailwindcss",
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+
+  "tailwindCSS.colorDecorators":true,
+  "tailwindCSS.emmetCompletions":true,
+}

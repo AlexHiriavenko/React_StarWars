@@ -1,6 +1,6 @@
 const About = (): JSX.Element => {
   return (
-    <div className="min-h-[calc(100vh-70px)] max-xs:min-h-[calc(100vh-63px)] bg-gradient-to-b from-gray-900 to-black text-white px-4 py-16 flex items-center max-xs:justify-start max-xs:pt-0 justify-center overflow-hidden">
+    <div className="min-h-[calc(100vh-60px)] max-xs:min-h-[calc(100vh-63px)] bg-gradient-to-b from-gray-900 to-black text-white px-4 py-16 flex items-center max-xs:justify-start max-xs:pt-0 justify-center overflow-hidden">
       <div className="max-w-2xl w-full text-center bg-gray-800 bg-opacity-80 rounded-2xl shadow-xl p-10 backdrop-blur-md mb-28">
         <h1 className="text-4xl font-bold mb-6 text-accent">About This App</h1>
         <p className="text-lg mb-6">

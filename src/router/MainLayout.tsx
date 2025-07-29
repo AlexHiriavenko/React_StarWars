@@ -27,7 +27,7 @@ export function MainLayout(): JSX.Element {
       </header>
 
       {/* Контейнер с фоном-видео */}
-      <div className="relative video-wrapper mt-[70px] max-xs:mt-[63px] min-h-[calc(100vh-70px)] max-xs:min-h-[calc(100vh-63px)] overflow-hidden">
+      <div className="relative video-wrapper mt-[60px] min-h-[calc(100vh-60px)] max-xs:min-h-[calc(100vh-63px)] overflow-hidden max-xxs:mt-[70px]">
         {/* Видеофон */}
         <video
           autoPlay
