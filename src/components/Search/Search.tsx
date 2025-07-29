@@ -1,63 +1,60 @@
-import type { ChangeEvent, FormEvent, ReactNode } from 'react';
-import { Component } from 'react';
-import type { Character, AppState } from '../../AppTypes';
-import { CharacterService } from '../../services/CharacterService';
-
-interface SearchState {
-  newSearchValue: string;
-}
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useLS } from '@/hooks/useLS';
+import { AppRoutes } from '@/router/AppRoutes';
 
 interface SearchProps {
-  updateCards: (newCards: Character[]) => void;
-  setLoading: (bool: boolean) => void;
-  setPagination: (pagination: AppState['pagination']) => void;
+  setSearchParams: (params: URLSearchParams) => void;
 }
 
-class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      newSearchValue: localStorage.getItem('search') || '',
-    };
-  }
+const Search = ({ setSearchParams }: SearchProps): JSX.Element => {
+  const { getLS, setLS } = useLS();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ newSearchValue: event.target.value.trim() });
-  };
+  const [newSearchValue, setNewSearchValue] = useState(
+    () => getLS<string>('search') || ''
+  );
 
-  handleSearch = async (event: FormEvent): Promise<void> => {
-    const { setLoading, updateCards, setPagination } = this.props;
-    setLoading(true);
+  const handleSearch = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
-    const { newSearchValue } = this.state;
-    localStorage.setItem('search', newSearchValue);
-    const characterService = new CharacterService();
-    const characters = await characterService.fetchCharacters(
-      { searchValue: newSearchValue },
-      setPagination
-    );
-    updateCards(characters);
-    setLoading(false);
+    const trimmedValue = newSearchValue.trim();
+    setLS('search', trimmedValue);
+    const newParams = new URLSearchParams();
+    const startPage = '1';
+    newParams.set('page', startPage);
+    if (trimmedValue) {
+      newParams.set('search', trimmedValue);
+    } else {
+      newParams.delete('search');
+    }
+    const isOutlet = location.pathname.includes(AppRoutes.DETAILS);
+    if (isOutlet) navigate('/');
+    setSearchParams(newParams);
   };
 
-  render(): ReactNode {
-    const { newSearchValue } = this.state;
-    return (
-      <form className="search-form" onSubmit={this.handleSearch}>
-        <input
-          id="search"
-          className="search-input"
-          type="text"
-          value={newSearchValue}
-          onChange={this.handleInputChange}
-          placeholder="enter character name"
-        />
-        <button className="search-btn" type="submit">
-          Search
-        </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form
+      onSubmit={handleSearch}
+      className="flex items-center justify-center gap-3 px-2 overflow-x-hidden w-auto max-md:w-full max-xs:px-1 max-xs:gap-[6px]"
+    >
+      <input
+        id="search"
+        type="text"
+        placeholder="enter character name"
+        value={newSearchValue}
+        onChange={(e) => setNewSearchValue(e.target.value)}
+        className="px-3 py-2 text-white w-[300px] max-w-[60%] rounded-[12px] outline-none border border-gray-400/70 bg-input max-xs:max-w-[60%]"
+      />
 
-export default Search;
+      <button
+        type="submit"
+        className="px-3 py-2 font-bold rounded-[16px] border-none w-[96px] min-w-[78px] max-w-[20%] bg-blue-500 text-white"
+      >
+        Search
+      </button>
+    </form>
+  );
+};
+
+export { Search };
