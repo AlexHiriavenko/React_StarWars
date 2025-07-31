@@ -8,13 +8,15 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ededed;
+  --foreground: #131313;
+  --input: #ededed;
 }
 
 .dark {
-  --background: #0a0a0a;
+  --background: #131313;
   --foreground: #ededed;
+  --input: #3b3b3b;
 }
 
 .video-wrapper::before {
@@ -28,9 +30,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-input: var(--input);
 
   --color-accent: #11cb55;
-  --color-input: #3b3b3b;
 
   --font-title: 'Rubik Mono One', sans-serif;
 
@@ -54,6 +56,6 @@
   }
 
   .text-shadow-sm {
-    text-shadow: 1px 1px 1px #000000;
+    text-shadow: 1px 0px 1px rgb(39, 38, 38);
   }
 }

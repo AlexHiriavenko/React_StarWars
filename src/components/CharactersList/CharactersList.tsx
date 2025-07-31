@@ -24,8 +24,14 @@ const CharacterList = ({
 
   if (!characters?.length) {
     return (
-      <div className="w-[40%] max-md:w-full min-h-[400px] bg-gradient-to-b from-black/50 to-black/40 mx-auto">
-        <h3 className="text-white py-4 px-2 text-lg font-bold text-shadow-sm">
+      <div
+        className="
+          w-[40%] max-md:w-full min-h-[400px] mx-auto
+          bg-gradient-to-b from-white/50 to-white/40
+          dark:from-black/50 dark:to-black/40
+        "
+      >
+        <h3 className="text-foreground py-4 px-2 text-lg font-bold">
           No characters found
         </h3>
       </div>
@@ -33,10 +39,14 @@ const CharacterList = ({
   }
 
   return (
-    <div className="w-[40%] max-md:w-full min-h-[476px] max-w-[360px] min-w-[280px] bg-gradient-to-b from-black/70 to-black/60">
-      <h3 className="text-white py-4 text-lg font-bold text-shadow-sm">
-        Characters
-      </h3>
+    <div
+      className="
+          w-[40%] max-md:w-full min-h-[400px] mx-auto
+          bg-gradient-to-b from-white/50 to-white/40
+          dark:from-black/50 dark:to-black/40
+        "
+    >
+      <h3 className="text-foreground py-4 text-lg font-bold">Characters</h3>
       <ul className="px-4 pb-4">
         {characters.map((character) => {
           const characterId = getIdFromURL(character.url);
@@ -47,10 +57,10 @@ const CharacterList = ({
               key={character.url}
               onClick={() => handleCharacterClick(character)}
               className={classNames(
-                'mt-4 cursor-pointer text-left text-shadow-sm hover:bg-white/10 py-1/4',
+                'mt-4 cursor-pointer text-left hover:bg-white/10 py-1/4 text-shadow-sm',
                 {
                   'text-accent': isSelected,
-                  'text-white': !isSelected,
+                  'text-foreground': !isSelected,
                 }
               )}
             >

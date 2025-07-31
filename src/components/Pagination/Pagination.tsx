@@ -14,11 +14,11 @@ export default function Pagination({
   if (totalPages <= 1) return <></>;
 
   return (
-    <div className="mt-6 flex flex-wrap justify-center gap-2 text-white">
+    <div className="mt-6 flex flex-wrap justify-center gap-2 text-foreground">
       {pages.map((page) => (
         <button
           key={page}
-          className={`px-3 py-1 border border-white/40 bg-gradient-to-b from-black/40 to-black/20 ${
+          className={`px-3 py-1 border border-white/40 bg-gradient-to-b from-white/50 to-white/40 dark:from-black/40 dark:to-black/20 ${
             page === currentPage ? 'bg-accent text-white' : ''
           }`}
           onClick={() => onPageChange(page)}
