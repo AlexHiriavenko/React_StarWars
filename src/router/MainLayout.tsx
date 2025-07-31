@@ -5,12 +5,12 @@ export function MainLayout(): JSX.Element {
 
   return (
     <>
-      <header className="w-full py-3 bg-black text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed z-50">
+      <header className="w-full py-3 bg-background text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed z-50">
         <h1 className="text-[42px] max-xs:text-[36px] font-normal text-center font-title custom-title-effect">
           Star Wars
         </h1>
 
-        <nav className="flex gap-4 text-white text-lg font-light">
+        <nav className="flex gap-4 text-foreground text-lg font-light">
           <Link
             to="/"
             className={location.pathname === '/' ? 'text-accent' : ''}

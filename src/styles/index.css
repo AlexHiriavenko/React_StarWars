@@ -1,10 +1,15 @@
-@layer theme, base, components, utilities;
-
 @import './normalize.css';
 @import 'tailwindcss';
 
 /* Use the @config directive to load a legacy JavaScript-based configuration file: */
 /* @config "../../tailwind.config.js"; */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
 
 .video-wrapper::before {
   content: '';
@@ -14,7 +19,10 @@
   background: linear-gradient(to bottom, #111827, #000000);
 }
 
-@theme {
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
   --color-accent: #11cb55;
   --color-input: #3b3b3b;
 
@@ -27,6 +35,13 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
 @layer utilities {
