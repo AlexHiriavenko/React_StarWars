@@ -1,5 +1,6 @@
 @import './normalize.css';
 @import 'tailwindcss';
+@import './theme-checkbox';
 
 /* Use the @config directive to load a legacy JavaScript-based configuration file: */
 /* @config "../../tailwind.config.js"; */
@@ -9,6 +10,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 .video-wrapper::before {
@@ -35,13 +41,6 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 @layer utilities {

@@ -1,4 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { ThemeSwitcher } from '@/components/ThemeContext/ThemeSwitcher';
 
 export function MainLayout(): JSX.Element {
   const location = useLocation();
@@ -24,6 +25,7 @@ export function MainLayout(): JSX.Element {
             About
           </Link>
         </nav>
+        <ThemeSwitcher />
       </header>
 
       {/* Контейнер с фоном-видео */}
