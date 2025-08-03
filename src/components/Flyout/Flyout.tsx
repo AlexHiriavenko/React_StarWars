@@ -1,6 +1,7 @@
 import type { RootState } from '@/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearItems } from '@/redux/slices/selectedCharactersSlice';
+import { downloadCharactersAsCSV } from '@/services';
 
 export const Flyout = (): JSX.Element => {
   const selectedItems = useSelector(
@@ -17,7 +18,8 @@ export const Flyout = (): JSX.Element => {
   };
 
   const handleDownload = (): void => {
-    console.log('Download clicked');
+    const selectedArray = Object.values(selectedItems);
+    downloadCharactersAsCSV(selectedArray);
   };
 
   return (
