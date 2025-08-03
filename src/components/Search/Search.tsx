@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLS } from '@/hooks/useLS';
+import { useLS } from '@/hooks';
 import { AppRoutes } from '@/router/AppRoutes';
 
 interface SearchProps {
@@ -44,12 +44,12 @@ const Search = ({ setSearchParams }: SearchProps): JSX.Element => {
         placeholder="enter character name"
         value={newSearchValue}
         onChange={(e) => setNewSearchValue(e.target.value)}
-        className="px-3 py-2 text-white w-[300px] max-w-[60%] rounded-[12px] outline-none border border-gray-400/70 bg-input max-xs:max-w-[60%]"
+        className="px-3 py-2 text-foreground w-[300px] max-w-[60%] rounded-[12px] outline-none border border-gray-400/70 bg-input max-xs:max-w-[60%]"
       />
 
       <button
         type="submit"
-        className="px-3 py-2 font-bold rounded-[16px] border-none w-[96px] min-w-[78px] max-w-[20%] bg-blue-500 text-white"
+        className="px-3 py-2 font-bold rounded-[16px] border-none w-[96px] min-w-[78px] max-w-[20%] bg-green-600 text-white dark:bg-blue-500"
       >
         Search
       </button>

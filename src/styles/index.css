@@ -1,4 +1,23 @@
 @import './normalize.css';
+@import 'tailwindcss';
+@import './theme-checkbox';
+
+/* Use the @config directive to load a legacy JavaScript-based configuration file: */
+/* @config "../../tailwind.config.js"; */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ededed;
+  --foreground: #131313;
+  --input: #ededed;
+}
+
+.dark {
+  --background: #131313;
+  --foreground: #ededed;
+  --input: #3b3b3b;
+}
 
 .video-wrapper::before {
   content: '';
@@ -8,10 +27,23 @@
   background: linear-gradient(to bottom, #111827, #000000);
 }
 
-/* postcss */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-input: var(--input);
+
+  --color-accent: #11cb55;
+
+  --font-title: 'Rubik Mono One', sans-serif;
+
+  --breakpoint-xxs: 390px;
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 796px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
 
 @layer utilities {
   .custom-title-effect {
@@ -24,6 +56,6 @@
   }
 
   .text-shadow-sm {
-    text-shadow: 1px 1px 1px #000000;
+    text-shadow: 1px 0px 1px rgb(39, 38, 38);
   }
 }

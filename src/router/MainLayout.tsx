@@ -1,16 +1,17 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { ThemeSwitcher } from '@/components/ThemeContext/ThemeSwitcher';
 
 export function MainLayout(): JSX.Element {
   const location = useLocation();
 
   return (
     <>
-      <header className="w-full py-3 bg-black text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed z-50">
-        <h1 className="text-[42px] max-xs:text-[36px] font-normal text-center font-title custom-title-effect">
+      <header className="w-full py-3 bg-background text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed z-50">
+        <h1 className="text-[42px] max-xs:text-[36px] max-xs:hidden font-normal text-center font-title custom-title-effect">
           Star Wars
         </h1>
 
-        <nav className="flex gap-4 text-white text-lg font-light">
+        <nav className="flex gap-4 text-foreground text-lg font-light">
           <Link
             to="/"
             className={location.pathname === '/' ? 'text-accent' : ''}
@@ -24,10 +25,11 @@ export function MainLayout(): JSX.Element {
             About
           </Link>
         </nav>
+        <ThemeSwitcher />
       </header>
 
       {/* Контейнер с фоном-видео */}
-      <div className="relative video-wrapper mt-[70px] max-xs:mt-[63px] min-h-[calc(100vh-70px)] max-xs:min-h-[calc(100vh-63px)] overflow-hidden">
+      <div className="relative video-wrapper mt-[60px] min-h-[calc(100vh-60px)] max-xs:min-h-[calc(100vh-63px)] overflow-hidden max-xxs:mt-[64px]">
         {/* Видеофон */}
         <video
           autoPlay

@@ -1,0 +1,125 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@tailwind",
+      "description": "Use the `@tailwind` directive to insert Tailwind's `base`, `components`, `utilities` and `screens` styles into your CSS.",
+      "references": [
+        {
+          "name": "Tailwind Documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#tailwind"
+        }
+      ]
+    },
+    {
+      "name": "@apply",
+      "description": "Use the `@apply` directive to inline any existing utility classes into your own custom CSS.",
+      "references": [
+        {
+          "name": "Tailwind Documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#apply"
+        }
+      ]
+    },
+    {
+      "name": "@responsive",
+      "description": "Wrap utilities in @responsive to generate responsive variants.",
+      "references": [
+        {
+          "name": "Tailwind Documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#responsive"
+        }
+      ]
+    },
+    {
+      "name": "@screen",
+      "description": "Create media queries that reference your breakpoints by name.",
+      "references": [
+        {
+          "name": "Tailwind Documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#screen"
+        }
+      ]
+    },
+    {
+      "name": "@variants",
+      "description": "Generate hover, focus, active and other variants of your own utilities.",
+      "references": [
+        {
+          "name": "Tailwind Documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#variants"
+        }
+      ]
+    },
+    {
+      "name": "@plugin",
+      "description": "Define a plugin inline using the `@plugin` directive.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#plugin"
+        }
+      ]
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Create your own custom responsive variants.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#custom-variant"
+        }
+      ]
+    },
+    {
+      "name": "@theme",
+      "description": "Define CSS variables to use as custom Tailwind theme values.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#theme"
+        }
+      ]
+    },
+    {
+      "name": "@utility",
+      "description": "Define your own utility class inline.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#utility"
+        }
+      ]
+    },
+    {
+      "name": "@variant",
+      "description": "Define custom variants.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#variant"
+        }
+      ]
+    },
+    {
+      "name": "@source",
+      "description": "Safelist classes dynamically using `@source inline(...)`.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#source"
+        }
+      ]
+    },
+    {
+      "name": "@reference",
+      "description": "Use `@reference` to inject global CSS variables with helpful aliases.",
+      "references": [
+        {
+          "name": "Tailwind CSS v4",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#reference"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import type { Character } from '@/types/AppTypes';
-import { Loader, CloseButton } from '@/components/baseComponents';
+import { Loader, IconButton } from '@/components/baseComponents';
+import CloseIcon from '@/components/SWG-icons/Close';
 import { getIdFromURL } from '@/utils';
 
 interface CardProps {
@@ -28,18 +29,24 @@ const Card = ({ card, closeCard, loadingDetails }: CardProps): JSX.Element => {
     return (
       <div
         className="relative w-[230px] h-[344px] overflow-y-auto text-accent
-                 bg-gradient-to-b from-black/60 to-black/50 text-shadow-sm flex flex-col items-center mx-auto"
+                text-shadow-sm flex flex-col items-center mx-auto
+                bg-gradient-to-b from-white/50 to-white/40
+              dark:from-black/50 dark:to-black/40"
         role="article"
       >
         <h3 className="my-2 text-lg font-semibold">{card.name || 'unknown'}</h3>
-        <p className="text-sm text-white mb-2">
+        <p className="text-sm text-foreground mb-2">
           gender: {card.gender || 'unknown'}
         </p>
-        <p className="text-sm text-white mb-2">
+        <p className="text-sm text-foreground mb-2">
           birth year: {card.birth_year || 'unknown'}
         </p>
         <img src={characterPhoto} alt="character photo" width={154} />
-        <CloseButton color="white" size={22} onClick={closeCard} />
+        <IconButton
+          size={22}
+          icon={<CloseIcon color="white" />}
+          onClick={closeCard}
+        />
       </div>
     );
   }

@@ -4,4 +4,4 @@ npm run test:coverage || {
   exit 1
 }
 
-echo "✅ Pre-commit checks passed!"
+echo "✅ Pre-push checks passed!"

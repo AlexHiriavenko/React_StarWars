@@ -1,15 +1,23 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import About from './About';
+import { TestProviders } from '@/mocks/TestProviders';
 
 describe('About Page', () => {
+  const renderAbout = () =>
+    render(
+      <TestProviders>
+        <About />
+      </TestProviders>
+    );
+
   it('renders the main title', () => {
-    render(<About />);
+    renderAbout();
     expect(screen.getByText(/About This App/i)).toBeInTheDocument();
   });
 
   it('renders the RS School link', () => {
-    render(<About />);
+    renderAbout();
     const rsLink = screen.getByRole('link', {
       name: /React Course by RS School/i,
     });
@@ -20,7 +28,7 @@ describe('About Page', () => {
   });
 
   it('renders GitHub link with username', () => {
-    render(<About />);
+    renderAbout();
     const githubLink = screen.getByRole('link', {
       name: /github.com\/AlexHiriavenko/i,
     });
@@ -31,7 +39,7 @@ describe('About Page', () => {
   });
 
   it('renders email link with address', () => {
-    render(<About />);
+    renderAbout();
     const emailLink = screen.getByRole('link', {
       name: /martmarchmartmarch@gmail.com/i,
     });
@@ -42,7 +50,7 @@ describe('About Page', () => {
   });
 
   it('renders copyright text', () => {
-    render(<About />);
+    renderAbout();
     const year = new Date().getFullYear();
     expect(
       screen.getByText(`© ${year} All rights reserved.`)

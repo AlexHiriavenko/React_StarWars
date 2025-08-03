@@ -1,2 +1,2 @@
-export { CloseButton } from './CloseButton';
+export { IconButton } from './IconButton';
 export { Loader } from './Loader';
