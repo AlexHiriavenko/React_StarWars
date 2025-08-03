@@ -36,8 +36,6 @@ const CharacterList = ({
     } else {
       dispatch(addItem(character));
     }
-
-    console.log(selectedItems);
   };
 
   if (!characters?.length) {

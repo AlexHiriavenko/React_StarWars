@@ -13,18 +13,24 @@ import {
 import { BASE_URL } from '@/services/constants';
 import Home from './Home';
 import { server } from '@/mocks/server';
+import { TestProviders } from '@/mocks/TestProviders';
 
 describe('Home component', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  it('renders Home and displays character list from API', async () => {
+  const renderHome = () =>
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Home />
-      </MemoryRouter>
+      <TestProviders>
+        <MemoryRouter initialEntries={['/']}>
+          <Home />
+        </MemoryRouter>
+      </TestProviders>
     );
+
+  it('renders Home and displays character list from API', async () => {
+    renderHome();
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
 
@@ -41,22 +47,14 @@ describe('Home component', () => {
       })
     );
 
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Home />
-      </MemoryRouter>
-    );
+    renderHome();
 
-    // Дождаться, пока появится заглушка
     const emptyText = await screen.findByText(/no characters found/i);
     expect(emptyText).toBeInTheDocument();
   });
+
   it('shows Loader during data fetching and hides it after', async () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Home />
-      </MemoryRouter>
-    );
+    renderHome();
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
 
@@ -93,11 +91,7 @@ describe('Home component', () => {
       })
     );
 
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Home />
-      </MemoryRouter>
-    );
+    renderHome();
 
     expect(await screen.findByText(/Luke Skywalker/i)).toBeInTheDocument();
     expect(screen.getByText(/Leia Organa/i)).toBeInTheDocument();
@@ -115,11 +109,7 @@ describe('Home component', () => {
       })
     );
 
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Home />
-      </MemoryRouter>
-    );
+    renderHome();
 
     await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalled();
