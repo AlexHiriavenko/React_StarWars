@@ -1,3 +1,4 @@
+import { Flyout } from '@/components/Flyout';
 import { MailIcon, GitHubIcon } from '@/components/SWG-icons';
 
 const About = (): JSX.Element => {
@@ -74,6 +75,7 @@ const About = (): JSX.Element => {
           © {new Date().getFullYear()} All rights reserved.
         </div>
       </div>
+      <Flyout />
     </div>
   );
 };

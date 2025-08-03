@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import { Loader } from '@/components/baseComponents';
 import { CharacterList } from '@/components/CharactersList/CharactersList';
+import { Flyout } from '@/components/Flyout';
 import Pagination from '@/components/Pagination/Pagination';
 import { Search } from '@/components/Search';
 import { useLS } from '@/hooks';
@@ -90,7 +91,7 @@ export default function Home(): JSX.Element {
   }, [searchParams, setSearchParams, getLS, setLS]);
 
   return (
-    <div className="min-h-[calc(100vh-84px)] max-md:min-h-[calc(100vh-136px)] pt-10">
+    <div className="min-h-[calc(100vh-60px)] max-md:min-h-[calc(100vh-136px)] pt-10 pb-20 max-md:pb-26">
       <Search setSearchParams={setSearchParams} />
 
       <section className="flex w-full max-w-[1090px] mx-auto mt-6 gap-4 justify-center max-xs:flex-col">
@@ -111,6 +112,7 @@ export default function Home(): JSX.Element {
         totalPages={pagination.total_pages || 1}
         onPageChange={handlePageChange}
       />
+      <Flyout />
     </div>
   );
 }

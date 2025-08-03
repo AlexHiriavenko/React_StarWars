@@ -7,7 +7,7 @@ export function MainLayout(): JSX.Element {
   return (
     <>
       <header className="w-full py-3 bg-background text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed z-50">
-        <h1 className="text-[42px] max-xs:text-[36px] font-normal text-center font-title custom-title-effect">
+        <h1 className="text-[42px] max-xs:text-[36px] max-xs:hidden font-normal text-center font-title custom-title-effect">
           Star Wars
         </h1>
 
@@ -29,7 +29,7 @@ export function MainLayout(): JSX.Element {
       </header>
 
       {/* Контейнер с фоном-видео */}
-      <div className="relative video-wrapper mt-[60px] min-h-[calc(100vh-60px)] max-xs:min-h-[calc(100vh-63px)] overflow-hidden max-xxs:mt-[70px]">
+      <div className="relative video-wrapper mt-[60px] min-h-[calc(100vh-60px)] max-xs:min-h-[calc(100vh-63px)] overflow-hidden max-xxs:mt-[64px]">
         {/* Видеофон */}
         <video
           autoPlay
