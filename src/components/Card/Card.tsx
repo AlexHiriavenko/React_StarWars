@@ -1,5 +1,6 @@
 import type { Character } from '@/types/AppTypes';
-import { Loader, CloseButton } from '@/components/baseComponents';
+import { Loader, IconButton } from '@/components/baseComponents';
+import CloseIcon from '@/components/SWG-icons/Close';
 import { getIdFromURL } from '@/utils';
 
 interface CardProps {
@@ -41,7 +42,11 @@ const Card = ({ card, closeCard, loadingDetails }: CardProps): JSX.Element => {
           birth year: {card.birth_year || 'unknown'}
         </p>
         <img src={characterPhoto} alt="character photo" width={154} />
-        <CloseButton color="white" size={22} onClick={closeCard} />
+        <IconButton
+          size={22}
+          icon={<CloseIcon color="white" />}
+          onClick={closeCard}
+        />
       </div>
     );
   }
