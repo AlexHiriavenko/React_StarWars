@@ -1,33 +1,25 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
-import {
-  describe,
-  it,
-  expect,
-  beforeAll,
-  afterAll,
-  afterEach,
-  vi,
-} from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { BASE_URL } from '@/services/constants';
 import Home from './Home';
 import { server } from '@/mocks/server';
 import { TestProviders } from '@/mocks/TestProviders';
 
-describe('Home component', () => {
-  beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
+const renderHome = (initial = '/?page=1') =>
+  render(
+    <TestProviders>
+      <MemoryRouter initialEntries={[initial]}>
+        <Home />
+      </MemoryRouter>
+    </TestProviders>
+  );
 
-  const renderHome = () =>
-    render(
-      <TestProviders>
-        <MemoryRouter initialEntries={['/']}>
-          <Home />
-        </MemoryRouter>
-      </TestProviders>
-    );
+describe('Home (RTK Query + MSW)', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
   it('renders Home and displays character list from API', async () => {
     renderHome();
@@ -41,80 +33,74 @@ describe('Home component', () => {
   });
 
   it('renders "No characters found" if API returns empty array', async () => {
-    server.use(
-      http.get(`${BASE_URL}people`, () => {
-        return HttpResponse.json({ count: 0, results: [] }, { status: 200 });
-      })
-    );
-
-    renderHome();
+    renderHome('/?page=1&search=fail');
 
     const emptyText = await screen.findByText(/no characters found/i);
     expect(emptyText).toBeInTheDocument();
+
+    expect(screen.queryByText(/Luke Skywalker/i)).not.toBeInTheDocument();
   });
 
-  it('shows Loader during data fetching and hides it after', async () => {
-    renderHome();
+  // it('renders multiple characters if API returns them', async () => {
+  //   server.use(
+  //     http.get(`${BASE_URL}people`, () =>
+  //       HttpResponse.json(
+  //         {
+  //           count: 3,
+  //           results: [
+  //             { name: 'Luke Skywalker', url: `${BASE_URL}people/1` },
+  //             { name: 'Leia Organa', url: `${BASE_URL}people/2` },
+  //             { name: 'Han Solo', url: `${BASE_URL}people/3` },
+  //           ],
+  //         },
+  //         { status: 200 }
+  //       )
+  //     )
+  //   );
 
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+  //   renderHome();
 
-    await waitFor(() => {
-      expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
-    });
-
-    expect(screen.getByText(/Luke Skywalker/i)).toBeInTheDocument();
-  });
+  //   expect(await screen.findByText(/Luke Skywalker/i)).toBeInTheDocument();
+  //   expect(screen.getByText(/Leia Organa/i)).toBeInTheDocument();
+  //   expect(screen.getByText(/Han Solo/i)).toBeInTheDocument();
+  // });
 
   it('renders multiple characters if API returns them', async () => {
     server.use(
-      http.get(`${BASE_URL}people`, () => {
-        return HttpResponse.json(
+      // маска по origin — игнорируем нюансы BASE_URL и query-параметров
+      http.get('*/people', () =>
+        HttpResponse.json(
           {
             count: 3,
             results: [
-              {
-                name: 'Luke Skywalker',
-                url: `${BASE_URL}people/1`,
-              },
-              {
-                name: 'Leia Organa',
-                url: `${BASE_URL}people/2`,
-              },
-              {
-                name: 'Han Solo',
-                url: `${BASE_URL}people/3`,
-              },
+              { name: 'Luke Skywalker', url: `${BASE_URL}people/1` },
+              { name: 'Leia Organa', url: `${BASE_URL}people/2` },
+              { name: 'Han Solo', url: `${BASE_URL}people/3` },
             ],
           },
           { status: 200 }
-        );
-      })
+        )
+      )
     );
 
-    renderHome();
+    // можно и '/?page=1', но '/?page=2' вовсе исключит какие-либо сомнения с кешом
+    renderHome('/?page=2');
 
     expect(await screen.findByText(/Luke Skywalker/i)).toBeInTheDocument();
-    expect(screen.getByText(/Leia Organa/i)).toBeInTheDocument();
-    expect(screen.getByText(/Han Solo/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Leia Organa/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Han Solo/i)).toBeInTheDocument();
   });
 
-  it('logs error if fetchCharacters throws', async () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-
-    server.use(
-      http.get(`${BASE_URL}people`, () => {
-        return HttpResponse.error();
-      })
-    );
+  it('renders FetchError if API request fails', async () => {
+    server.use(http.get(`${BASE_URL}people`, () => HttpResponse.error()));
 
     renderHome();
 
-    await waitFor(() => {
-      expect(consoleErrorSpy).toHaveBeenCalled();
-    });
+    // ждём отображения нашего компонента ошибки
+    const title = await screen.findByText(/Ошибка при загрузке персонажей./i);
+    expect(title).toBeInTheDocument();
 
-    consoleErrorSpy.mockRestore();
+    // и лоадер к этому моменту уже не показан
+    expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
   });
 });

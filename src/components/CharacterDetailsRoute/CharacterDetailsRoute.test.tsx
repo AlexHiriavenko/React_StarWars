@@ -1,104 +1,68 @@
-// import type { CharacterResponse } from '@/services/types';
-// import { render, screen, waitFor } from '@testing-library/react';
-// import { MemoryRouter, Route, Routes, Outlet } from 'react-router-dom';
-// import {
-//   describe,
-//   it,
-//   expect,
-//   vi,
-//   beforeEach,
-//   beforeAll,
-//   afterEach,
-//   afterAll,
-//   type MockInstance,
-// } from 'vitest';
-// import { CharacterDetailsRoute } from './CharacterDetailsRoute';
-// import { handlers } from '@/mocks/handlers';
-// import { server } from '@/mocks/server';
-// import { CharacterService } from '@/services';
+// CharacterDetailsRoute.test.tsx (исправленный)
+import { render, screen } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
+import { MemoryRouter, Route, Routes, Outlet } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
+import { BASE_URL } from '@/services/constants';
+import { CharacterDetailsRoute } from './CharacterDetailsRoute';
+import { server } from '@/mocks/server';
+import { TestProviders } from '@/mocks/TestProviders';
 
-// function WrapperWithContext() {
-//   const dummySearchParams = new URLSearchParams({ search: 'test' });
-//   return <Outlet context={{ searchParams: dummySearchParams }} />;
-// }
+function WrapperWithContext() {
+  const dummySearchParams = new URLSearchParams({ search: 'test' });
+  return <Outlet context={{ searchParams: dummySearchParams }} />;
+}
 
-// let fetchSpy: MockInstance<(id: string) => Promise<CharacterResponse>>;
-// let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+function renderDetails(initialEntry: string) {
+  return render(
+    <TestProviders>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <Routes>
+          <Route element={<WrapperWithContext />}>
+            <Route path="/details" element={<CharacterDetailsRoute />} />
+            <Route path="/details/:id" element={<CharacterDetailsRoute />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>
+    </TestProviders>
+  );
+}
 
-// describe('CharacterDetailsRoute', () => {
-//   beforeAll(() => {
-//     server.listen();
-//   });
+describe('CharacterDetailsRoute (RTK Query + MSW)', () => {
+  it('рендерит данные, отданные MSW для id=1 (LukeTest)', async () => {
+    renderDetails('/details/1');
 
-//   beforeEach(() => {
-//     server.use(...handlers);
-//     fetchSpy = vi.spyOn(CharacterService.prototype, 'fetchCharacter');
-//     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-//   });
+    // до ответа — лоадер
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
 
-//   afterEach(() => {
-//     server.resetHandlers();
-//     fetchSpy.mockRestore();
-//     consoleErrorSpy.mockRestore();
-//   });
+    // важный момент: здесь должен быть ИМЕННО LukeTest — это сигнал, что сработал наш handler
+    const name = await screen.findByText(/LukeTest/i);
+    expect(name).toBeInTheDocument();
 
-//   afterAll(() => {
-//     server.close();
-//   });
+    expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+  });
 
-//   it('calls fetchCharacter with correct ID and renders mocked data', async () => {
-//     render(
-//       <MemoryRouter initialEntries={['/details/1']}>
-//         <Routes>
-//           <Route element={<WrapperWithContext />}>
-//             <Route path="/details/:id" element={<CharacterDetailsRoute />} />
-//           </Route>
-//         </Routes>
-//       </MemoryRouter>
-//     );
+  it('показывает FetchError при 404', async () => {
+    server.use(
+      http.get(`${BASE_URL}people/:id`, ({ params }) => {
+        return HttpResponse.json(
+          { detail: `Character with ID ${params.id} not found` },
+          { status: 404 }
+        );
+      })
+    );
 
-//     const name = await screen.findByText(/lukeTest/i);
-//     expect(name).toBeInTheDocument();
-//     expect(fetchSpy).toHaveBeenCalledWith('1');
-//     expect(fetchSpy).toHaveBeenCalledTimes(1);
-//   });
+    renderDetails('/details/999');
 
-//   it('handles error when fetchCharacter fails', async () => {
-//     fetchSpy.mockRejectedValueOnce(new Error('Failed to fetch'));
+    const title = await screen.findByText(/Ошибка при загрузке персонажа/i);
+    expect(title).toBeInTheDocument();
+  });
 
-//     render(
-//       <MemoryRouter initialEntries={['/details/999']}>
-//         <Routes>
-//           <Route element={<WrapperWithContext />}>
-//             <Route path="/details/:id" element={<CharacterDetailsRoute />} />
-//           </Route>
-//         </Routes>
-//       </MemoryRouter>
-//     );
+  it('skip без id: ничего не рендерит', async () => {
+    renderDetails('/details');
 
-//     await waitFor(() => {
-//       expect(fetchSpy).toHaveBeenCalledWith('999');
-//     });
-
-//     expect(screen.queryByRole('article')).not.toBeInTheDocument();
-//     expect(screen.queryByText(/Luke/i)).not.toBeInTheDocument();
-//   });
-
-//   it('does not call fetchCharacter if id param is missing', async () => {
-//     render(
-//       <MemoryRouter initialEntries={['/details']}>
-//         <Routes>
-//           <Route element={<WrapperWithContext />}>
-//             <Route path="/details" element={<CharacterDetailsRoute />} />
-//           </Route>
-//         </Routes>
-//       </MemoryRouter>
-//     );
-
-//     await waitFor(() => {
-//       expect(fetchSpy).not.toHaveBeenCalled();
-//     });
-
-//     expect(screen.queryByRole('article')).not.toBeInTheDocument();
-//   });
-// });
+    expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+    expect(screen.queryByRole('article')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Luke/i)).not.toBeInTheDocument();
+  });
+});

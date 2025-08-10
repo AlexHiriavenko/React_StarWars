@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom';
 
+import { cleanup } from '@testing-library/react';
 import { vi } from 'vitest';
+import { beforeAll, afterAll, afterEach } from 'vitest';
+import { server } from '@/mocks/server';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -15,3 +18,11 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => {
+  cleanup();
+  server.resetHandlers();
+  vi.clearAllMocks();
+});
+afterAll(() => server.close());
