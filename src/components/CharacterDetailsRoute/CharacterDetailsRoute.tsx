@@ -32,7 +32,7 @@ function CharacterDetailsRoute(): JSX.Element {
   return (
     <Card
       card={(data as Character) ?? null}
-      loadingDetails={isLoading}
+      loadingDetails={isLoading || isFetching}
       closeCard={() => navigate(`/?${searchParams.toString()}`)}
     />
   );
