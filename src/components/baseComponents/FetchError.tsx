@@ -18,7 +18,7 @@ export function FetchError({
 }: Props): JSX.Element {
   return (
     <div
-      className="p-4 bg-red-500/20 text-red-200 rounded-lg"
+      className="p-4 bg-red-400/40 text-foreground rounded-lg"
       role="alert"
       aria-live="polite"
     >
@@ -29,7 +29,7 @@ export function FetchError({
 
       <div className="mt-8 flex gap-2 justify-center">
         <button
-          className="px-2 py-1 border border-white/30 rounded"
+          className="px-2 py-1 border border-white/30 rounded bg-green-600 text-white dark:bg-blue-500"
           onClick={onRetry}
           disabled={disabled}
         >
@@ -37,7 +37,7 @@ export function FetchError({
         </button>
 
         <button
-          className="px-2 py-1 border border-white/30 rounded"
+          className="px-2 py-1 border border-white/30 rounded bg-green-600 text-white dark:bg-blue-500"
           onClick={onGoHome}
           disabled={disabled}
         >

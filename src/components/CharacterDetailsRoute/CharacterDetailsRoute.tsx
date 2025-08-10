@@ -21,7 +21,7 @@ function CharacterDetailsRoute(): JSX.Element {
   if (isError)
     return (
       <FetchError
-        title="Ошибка при загрузке персонажей."
+        title="Ошибка при загрузке персонажа."
         error={error}
         onRetry={() => refetch()}
         onGoHome={() => goHome({ replace: true, resetCache: true })}

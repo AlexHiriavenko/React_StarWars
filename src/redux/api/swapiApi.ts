@@ -33,13 +33,13 @@ export const swapiApi = createApi({
           return { type: 'Person', id } as const;
         }),
       ],
-      keepUnusedDataFor: 60,
+      keepUnusedDataFor: 120, // храним кеш 2 минуты
     }),
 
     getPerson: build.query<Person, string | number>({
       query: (id) => `people/${id}`,
       providesTags: (_res, _err, id) => [{ type: 'Person', id }],
-      keepUnusedDataFor: 300,
+      keepUnusedDataFor: 120, // храним кеш 2 минуты
     }),
   }),
 });

@@ -12,7 +12,7 @@ export function RefreshPanel({
   return (
     <div className="flex items-center justify-center gap-3 mt-3">
       <button
-        className="px-3 py-2 rounded-[12px] border border-white/30 bg-white/20 dark:bg-black/30"
+        className="px-3 py-2 rounded-[12px] bg-green-600 text-white dark:bg-blue-500"
         onClick={onSoftRefresh}
         disabled={disabled}
         title="Принудительный запрос без сноса кэша (список + открытая карточка)"
@@ -20,7 +20,7 @@ export function RefreshPanel({
         Refresh
       </button>
       <button
-        className="px-3 py-2 rounded-[12px] border border-white/30 bg-white/20 dark:bg-black/30"
+        className="px-3 py-2 rounded-[12px] bg-green-600 text-white dark:bg-blue-500"
         onClick={onHardRefresh}
         disabled={disabled}
         title="Инвалидация People и Person и перезапрос"
