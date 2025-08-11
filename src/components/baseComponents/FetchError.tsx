@@ -40,6 +40,7 @@ export function FetchError({
           className="px-2 py-1 border border-white/30 rounded bg-green-600 text-white dark:bg-blue-500"
           onClick={onGoHome}
           disabled={disabled}
+          role="button"
         >
           Home Page
         </button>

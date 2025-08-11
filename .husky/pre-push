@@ -1,7 +1,7 @@
 echo "🧪 Running Vitest with coverage..."
-# npm run test:coverage || {
-#   echo "❌ Tests failed or coverage thresholds not met."
-#   exit 1
-# }
+npm run test:coverage || {
+  echo "❌ Tests failed or coverage thresholds not met."
+  exit 1
+}
 
 echo "✅ Pre-push checks passed!"
