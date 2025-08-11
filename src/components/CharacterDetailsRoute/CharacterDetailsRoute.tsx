@@ -1,42 +1,38 @@
 import type { Character } from '@/types/AppTypes';
-import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
+import { FetchError } from '@/components/baseComponents';
 import { Card } from '@/components/Card';
-import { CharacterService } from '@/services';
+import { useGoHome } from '@/hooks';
+import { useGetPersonQuery } from '@/redux/api/swapiApi';
 
 function CharacterDetailsRoute(): JSX.Element {
   const { id } = useParams<{ id: string }>();
-  const [card, setCard] = useState<Character | null>(null);
-  const [loadingDetails, setLoadingDetails] = useState(false);
   const navigate = useNavigate();
   const { searchParams } = useOutletContext<{
     searchParams: URLSearchParams;
   }>();
+  const goHome = useGoHome();
 
-  useEffect(() => {
-    if (!id) return;
+  const { data, isLoading, isError, error, isFetching, refetch } =
+    useGetPersonQuery(id as string, {
+      skip: !id,
+    });
 
-    const fetchCharacter = async (): Promise<void> => {
-      try {
-        setLoadingDetails(true);
-        const service = new CharacterService();
-        const result = await service.fetchCharacter(id);
-        setCard(result);
-      } catch (error) {
-        console.error('Error fetching character details:', error);
-        setCard(null);
-      } finally {
-        setLoadingDetails(false);
-      }
-    };
-
-    fetchCharacter();
-  }, [id]);
+  if (isError)
+    return (
+      <FetchError
+        title="Ошибка при загрузке персонажа."
+        error={error}
+        onRetry={() => refetch()}
+        onGoHome={() => goHome({ replace: true, resetCache: true })}
+        disabled={isFetching}
+      />
+    );
 
   return (
     <Card
-      card={card}
-      loadingDetails={loadingDetails}
+      card={(data as Character) ?? null}
+      loadingDetails={isLoading || isFetching}
       closeCard={() => navigate(`/?${searchParams.toString()}`)}
     />
   );

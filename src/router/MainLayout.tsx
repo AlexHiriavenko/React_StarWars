@@ -1,13 +1,18 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useGoHome } from '@/hooks/useGoHome';
 import { ThemeSwitcher } from '@/components/ThemeContext/ThemeSwitcher';
 
 export function MainLayout(): JSX.Element {
   const location = useLocation();
+  const goHome = useGoHome();
 
   return (
     <>
       <header className="w-full py-3 bg-background text-base min-h-[64px] flex justify-around items-center overflow-x-hidden mb-5 flex-wrap gap-3 fixed z-50">
-        <h1 className="text-[42px] max-xs:text-[36px] max-xs:hidden font-normal text-center font-title custom-title-effect">
+        <h1
+          onClick={() => goHome({ replace: false, resetCache: false })}
+          className="text-[42px] max-xs:text-[36px] max-xs:hidden font-normal text-center font-title custom-title-effect cursor-pointer"
+        >
           Star Wars
         </h1>
 

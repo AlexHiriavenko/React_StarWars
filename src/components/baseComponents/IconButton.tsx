@@ -20,6 +20,7 @@ const IconButton = ({
       onClick={onClick}
       aria-label={ariaLabel}
       className="absolute flex items-center justify-center p-0 bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity"
+      data-testid={'icon-btn'}
       style={{
         width: `${size}px`,
         height: `${size}px`,

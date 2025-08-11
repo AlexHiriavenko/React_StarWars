@@ -1,103 +1,121 @@
-import type { QueryParams } from '@/services/types';
-import type { Character, AppState } from '@/types/AppTypes';
-import { useState, useEffect } from 'react';
+import type { AppDispatch } from '@/redux/store';
+import type { Character } from '@/types/AppTypes';
+import { useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   useSearchParams,
   useNavigate,
   Outlet,
   useLocation,
+  useMatch,
 } from 'react-router-dom';
 import { Loader } from '@/components/baseComponents';
+import { FetchError } from '@/components/baseComponents';
 import { CharacterList } from '@/components/CharactersList/CharactersList';
 import { Flyout } from '@/components/Flyout';
 import Pagination from '@/components/Pagination/Pagination';
+import { RefreshPanel } from '@/components/RefreshPanel';
 import { Search } from '@/components/Search';
+import { useGoHome } from '@/hooks';
 import { useLS } from '@/hooks';
+import { swapiApi, useGetPeopleQuery } from '@/redux/api/swapiApi';
 import { AppRoutes } from '@/router/AppRoutes';
-import { CharacterService } from '@/services';
-
-const initialState: AppState = {
-  cards: [],
-  loading: false,
-  searchParams: {
-    searchKey: 'search',
-    searchValue: '',
-    limit: 10,
-  },
-  pagination: {
-    currentPage: 1,
-    total_pages: 1,
-  },
-};
 
 export default function Home(): JSX.Element {
   const navigate = useNavigate();
-  const [cards, setCards] = useState<Character[]>(initialState.cards);
-  const [loading, setLoading] = useState<boolean>(initialState.loading);
-  const [pagination, setPagination] = useState(initialState.pagination);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { getLS, setLS } = useLS();
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
+  const { getLS } = useLS();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const goHome = useGoHome();
 
-  const getCharacters = async (queryParams: QueryParams): Promise<void> => {
-    setLoading(true);
-    const characterService = new CharacterService();
-    try {
-      const response = await characterService.fetchCharacters(queryParams);
-      const totalPages = Math.ceil(response.count / (queryParams.limit || 10));
-      setPagination({
-        currentPage: queryParams.page || 1,
-        total_pages: totalPages,
-      });
-      setCards(response.results || []);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    let needUpdate = false;
+    const next = new URLSearchParams(searchParams);
+
+    if (!next.get('page')) {
+      next.set('page', '1');
+      needUpdate = true;
     }
-  };
 
-  const handlePageChange = (page: number): void => {
+    if (!next.get('search')) {
+      const savedSearch = getLS<string>('search') || '';
+      if (savedSearch) {
+        next.set('search', savedSearch);
+        needUpdate = true;
+      }
+    }
+
+    if (needUpdate) setSearchParams(next);
+  }, [getLS, searchParams, setSearchParams]);
+
+  const page = useMemo(
+    () => Number(searchParams.get('page') || '1'),
+    [searchParams]
+  );
+
+  const search = useMemo(
+    () => searchParams.get('search') || '',
+    [searchParams]
+  );
+
+  const match = useMatch('/details/:id');
+  const currentId = match?.params.id ?? null;
+
+  const { data, isLoading, isFetching, isError, error, refetch } =
+    useGetPeopleQuery({ page, search });
+
+  const cards: Character[] = data?.results ?? [];
+  const totalPages = Math.ceil((data?.count ?? 0) / 10) || 1;
+
+  const handlePageChange = (newPage: number): void => {
     const isOutlet = location.pathname.includes(AppRoutes.DETAILS);
     if (isOutlet) navigate('/');
     setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      newParams.set('page', page.toString());
-      return newParams;
+      const next = new URLSearchParams(prev);
+      next.set('page', String(newPage));
+      return next;
     });
   };
 
-  useEffect(() => {
-    const initialSearch = searchParams.get('search');
-    if (initialSearch) {
-      setLS('search', initialSearch);
+  const softRefresh = (): void => {
+    // рефреш для списка
+    refetch();
+    if (currentId) {
+      // рефреш для карточки если она открыта
+      dispatch(swapiApi.util.prefetch('getPerson', currentId, { force: true }));
     }
+  };
 
-    const searchValue = getLS<string>('search') || '';
-    const page = parseInt(searchParams.get('page') || '1');
-
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      newParams.set('page', page.toString());
-      if (searchValue) {
-        newParams.set('search', searchValue);
-      } else {
-        newParams.delete('search');
-      }
-      return newParams;
-    });
-
-    getCharacters({ searchValue, page });
-  }, [searchParams, setSearchParams, getLS, setLS]);
+  const hardRefresh = (): void => {
+    dispatch(swapiApi.util.invalidateTags(['People', 'Person']));
+  };
 
   return (
     <div className="min-h-[calc(100vh-60px)] max-md:min-h-[calc(100vh-136px)] pt-10 pb-20 max-md:pb-26">
       <Search setSearchParams={setSearchParams} />
 
+      <RefreshPanel
+        onSoftRefresh={softRefresh}
+        onHardRefresh={hardRefresh}
+        disabled={isLoading || isFetching}
+      />
+
       <section className="flex w-full max-w-[1090px] mx-auto mt-6 gap-4 justify-center max-xs:flex-col">
         <div className="w-[60%] max-xs:w-full min-h-[500px] flex justify-center">
-          {loading && <Loader size={60} />}
-          {!loading && (
+          {(isLoading || isFetching) && <Loader size={60} />}
+
+          {isError && (
+            <FetchError
+              title="Ошибка при загрузке персонажей."
+              error={error}
+              onRetry={() => refetch()}
+              onGoHome={() => goHome({ replace: true, resetCache: true })}
+              disabled={isFetching}
+            />
+          )}
+
+          {!isLoading && !isFetching && !isError && (
             <CharacterList characters={cards} searchParams={searchParams} />
           )}
         </div>
@@ -108,8 +126,8 @@ export default function Home(): JSX.Element {
       </section>
 
       <Pagination
-        currentPage={pagination.currentPage || 1}
-        totalPages={pagination.total_pages || 1}
+        currentPage={page}
+        totalPages={totalPages}
         onPageChange={handlePageChange}
       />
       <Flyout />
